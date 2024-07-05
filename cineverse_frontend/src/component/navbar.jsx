@@ -1,17 +1,23 @@
 import React, { useState } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import { FaBars, FaCaretDown, FaUserCircle } from 'react-icons/fa';
-import { logoutUser } from '../api/Api'; // Import the logout function
+import { Link, useNavigate } from 'react-router-dom';
+import { Link as ScrollLink } from 'react-scroll'; // Import ScrollLink
+import { logoutUser } from '../api/Api';
 import '../style/navbar.css';
 
 const Navbar = ({ handleLoginModalShow, handleRegisterModalShow, isLoggedIn, user }) => {
     const [activeLink, setActiveLink] = useState('home');
     const [menuOpen, setMenuOpen] = useState(false);
-    const [dropdownOpen, setDropdownOpen] = useState(false); // State for dropdown menu
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const navigate = useNavigate();
 
     const handleLinkClick = (link) => {
         setActiveLink(link);
-        setMenuOpen(false); // Close menu on link click
+        setMenuOpen(false);
+        if (link === 'home') {
+            navigate('/');
+        }
     };
 
     const toggleMenu = () => {
@@ -19,12 +25,12 @@ const Navbar = ({ handleLoginModalShow, handleRegisterModalShow, isLoggedIn, use
     };
 
     const toggleDropdown = () => {
-        setDropdownOpen(!dropdownOpen); // Toggle dropdown menu
+        setDropdownOpen(!dropdownOpen);
     };
 
     const handleLogout = () => {
-        logoutUser(); // Call the logout function
-        window.location.reload(); // Refresh the page to update the state
+        logoutUser();
+        window.location.reload();
     };
 
     return (
@@ -32,14 +38,16 @@ const Navbar = ({ handleLoginModalShow, handleRegisterModalShow, isLoggedIn, use
             <Container>
                 <Row className="align-items-center">
                     <Col className="logo-col">
-                        <span className="logo-text">Cine<span className="logo-verse">verse</span></span>
+                        <Link to="/" className="logo-text-link" onClick={() => handleLinkClick('home')}>
+                            <span className="logo-text">Cine<span className="logo-verse">verse</span></span>
+                        </Link>
                     </Col>
                     <Col className="navigation-col">
                         <div className={`navigation ${menuOpen ? 'open' : ''}`}>
-                            <a href="#home" className={activeLink === 'home' ? 'active' : ''} onClick={() => handleLinkClick('home')}>Home</a>
-                            <a href="#now-showing" className={activeLink === 'now-showing' ? 'active' : ''} onClick={() => handleLinkClick('now-showing')}>Now Showing</a>
-                            <a href="#coming-soon" className={activeLink === 'coming-soon' ? 'active' : ''} onClick={() => handleLinkClick('coming-soon')}>Coming Soon</a>
-                            <a href="#contact-us" className={activeLink === 'contact-us' ? 'active' : ''} onClick={() => handleLinkClick('contact-us')}>Contact Us</a>
+                            <Link to="/" className={activeLink === 'home' ? 'active' : ''} onClick={() => handleLinkClick('home')}>Home</Link>
+                            <ScrollLink to="now-showing" smooth={true} duration={500} className={activeLink === 'now-showing' ? 'active' : ''} onClick={() => handleLinkClick('now-showing')}>Now Showing</ScrollLink>
+                            <ScrollLink to="coming-soon" smooth={true} duration={500} className={activeLink === 'coming-soon' ? 'active' : ''} onClick={() => handleLinkClick('coming-soon')}>Coming Soon</ScrollLink>
+                            <Link to="#contact-us" className={activeLink === 'contact-us' ? 'active' : ''} onClick={() => handleLinkClick('contact-us')}>Contact Us</Link>
                         </div>
                     </Col>
                     <Col className="login-register-col">
@@ -59,8 +67,8 @@ const Navbar = ({ handleLoginModalShow, handleRegisterModalShow, isLoggedIn, use
                                 </div>
                             ) : (
                                 <>
-                                    <a href="#login" className="login-link" onClick={handleLoginModalShow}>Login</a>
-                                    <a href="#register" className="register-link" onClick={handleRegisterModalShow}>Register</a>
+                                    <button  className="login-link" onClick={handleLoginModalShow}>Login</button>
+                                    <button href="#register" className="register-link" onClick={handleRegisterModalShow}>Register</button>
                                 </>
                             )}
                         </div>

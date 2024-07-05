@@ -1,3 +1,7 @@
+html {
+    scroll-behavior: smooth;
+}
+
 /* Apply styles to the carousel indicators */
 .custom-carousel .carousel-indicators {
     bottom: 20px; /* Adjust position as needed */

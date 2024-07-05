@@ -33,8 +33,12 @@ const Homepage = () => {
                     </Carousel.Item>
                 ))}
             </Carousel>
-            <NowShowing />
-            <ComingSoon />
+            <div id="now-showing">
+                <NowShowing />
+            </div>
+            <div id="coming-soon">
+                <ComingSoon />
+            </div>
         </div>
     );
 };
