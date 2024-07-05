@@ -32,6 +32,7 @@ app.use(express.json());
 // Routes
 app.use("/api/movies", require("./routes/movieRoutes"));
 app.use("/api/users", require("./routes/userRoutes"));
+app.use("/api/bookings", require("./routes/bookingRoutes"));
 
 // Error handling middleware
 app.use((err, req, res, next) => {
