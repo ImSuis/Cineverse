@@ -43,6 +43,16 @@ const Movie = () => {
 
     const handleClose = () => setShow(false);
 
+    // Function to check if release date is greater than current date
+    const isReleased = () => {
+        if (!movie || !movie.releaseDate) {
+            return false; // Handle case where movie or release date is missing
+        }
+        const releaseDate = new Date(movie.releaseDate);
+        const currentDate = new Date();
+        return releaseDate <= currentDate; // Return true if release date is less than or equal to current date
+    };
+
     if (!movie) {
         return <div>Loading...</div>;
     }
@@ -67,7 +77,7 @@ const Movie = () => {
                     <p><strong>Rating:</strong> {movie.rating}</p>
                     <div className="buttons">
                         <button onClick={() => handleShow(movie.trailerUrl)}>Watch Trailer</button>
-                        <button>Get Ticket</button>
+                        {isReleased() && <button>Get Ticket</button>}
                     </div>
                 </div>
             </div>
