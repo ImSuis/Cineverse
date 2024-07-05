@@ -1,0 +1,191 @@
+/* SeatSelection.css */
+
+.seat-selection-container {
+    display: flex;
+    flex-direction: column; /* Column layout for small screens */
+    align-items: center; /* Center items on small screens */
+    padding: 10px;
+    margin-top: 13vh; /* Add margin at the top of the container */
+}
+
+.seat-selection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 2;
+    position: relative;
+    width: 100%; /* Full width for small screens */
+}
+
+.seat-rows-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: auto; /* Enable horizontal scrolling for overflow */
+}
+
+.column-labels, .seat-row {
+    display: flex;
+    align-items: center; /* Align items to the center */
+    justify-content: center; /* Center items within their containers */
+}
+
+.screen {
+    background: linear-gradient(to bottom, #333, #111); /* Gradient for 3D effect */
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+    width: 80%;
+    height: 40px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    position: relative;
+    z-index: 1;
+    clip-path: polygon(0 0, 100% 0, 80% 100%, 20% 100%); /* Create a concave bottom */
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5); /* Add shadow for 3D effect */
+}
+
+
+.booking-info {
+    flex: 1;
+    width: 100%; /* Full width for small screens */
+    padding: 20px;
+    margin-top: 20px; /* Add margin-top for separation */
+    background-color: #fff;
+    border-top: 1px solid #ddd; /* Adjusted border for visual separation */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+    min-height: 150px; /* Minimum height when no seats are selected */
+    transition: min-height 0.3s ease-in-out;
+}
+
+.booking-info h2 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #ddd;
+    font-size: 1.2em;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.booking-info .item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0;
+    padding: 10px 0;
+    border-bottom: 1px dashed #ddd;
+}
+
+.booking-info .item:last-child {
+    border-bottom: none;
+}
+
+.booking-info .item span {
+    font-size: 0.9em;
+}
+
+.booking-info .item .price {
+    font-weight: bold;
+}
+
+.booking-info .total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding-top: 10px;
+    border-top: 2px solid #ddd;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.booking-info .discount-code {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding: 10px;
+    border: 2px dashed #ddd;
+}
+
+.booking-info .discount-code input {
+    border: none;
+    outline: none;
+    flex: 1;
+}
+
+.booking-info button {
+    width: 100%;
+    padding: 15px;
+    background-color: #8BC34A;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-top: 20px;
+    font-size: 1em;
+}
+
+.booking-info button:hover {
+    background-color: #7cb342;
+}
+
+.booking-info .empty-message {
+    color: gray;
+    text-align: center;
+    margin-top: 50px;
+    font-size: 1.2em;
+}
+
+.seat {
+    width: 32px;
+    height: 32px;
+    margin: 5px;
+    background-color: #ccc;
+    border: 1px solid #999;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.seat.selected {
+    background-color: #6c7ae0;
+}
+
+.seat.booked {
+    background-color: #e06c6c;
+    cursor: not-allowed;
+}
+
+.label {
+    width: 32px; /* Match width and height to seat */
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: bold;
+    margin: 5px; /* Adjust margin */
+}
+
+.column-labels .label {
+    margin-top: 0; /* Remove margin from column labels */
+}
+
+/* Media queries for responsiveness */
+@media (min-width: 768px) {
+    .seat-selection-container {
+        flex-direction: row; /* Row layout for larger screens */
+    }
+    
+    .seat-selection {
+        width: auto; /* Auto width for larger screens */
+    }
+
+    .booking-info {
+        margin-top: 0; /* Remove top margin for larger screens */
+        margin-left: 20px; /* Add left margin for separation */
+        border-top: none; /* Remove top border */
+        border-left: 1px solid #ddd; /* Re-add left border */
+    }
+}

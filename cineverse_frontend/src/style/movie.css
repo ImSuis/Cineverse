@@ -1,0 +1,204 @@
+/* Ensure to create and style this CSS file accordingly */
+.youtube-video {
+    width: 100%;
+    height: 100%;
+}
+
+.video-modal .modal-content {
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center; /* Center content horizontally */
+    align-items: center;     /* Center content vertically */
+}
+
+.video-modal .modal-body {
+    padding: 0;
+    display: flex;
+    justify-content: center; /* Center video horizontally */
+    align-items: center;     /* Center video vertically */
+}
+
+/* Rest of the movie.css styles */
+body {
+    font-family: 'Judson', serif;
+}
+
+.movie-page {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.movie-banner {
+    width: 100%;
+    height: 55vh; /* Adjusted height for the banner */
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.movie-details {
+    display: flex;
+    padding: 20px;
+    background-color: #fff;
+    margin-left: 150px; /* Move content further to the right */
+}
+
+.poster img {
+    width: 250px;
+    height: auto;
+}
+
+.details {
+    margin-left: 60px; /* Increase space between poster and details */
+}
+
+.details h1 {
+    font-size: 2.5rem; /* Increase the font size of the title */
+    font-weight: bold; /* Make the title bold */
+    margin-bottom: 10px;
+}
+
+.details p {
+    font-size: 1.2rem; /* Increase the font size of the details */
+    margin: 5px 0;
+}
+
+.details .icon {
+    color: orange; /* Change icon color to orange */
+    margin-right: 5px;
+}
+
+.buttons {
+    margin-top: 10px;
+}
+
+.buttons button {
+    margin-right: 10px;
+    padding: 10px 20px;
+    background-color: #ff6600;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-family: 'Judson', serif; /* Ensure buttons have the same font */
+}
+
+.dashed-line {
+    border-top: 17px dashed black; /* Dashed line style */
+    margin-top: 30px; /* Spacing above the dashed line */
+    margin-bottom: 20px; /* Adjusted spacing below the dashed line */
+}
+
+.synopsis-container {
+    background-color: #f0f0f0; /* Grey background color */
+    padding: 15px 0; /* Ensure spacing below dashed line */
+}
+
+.synopsis {
+    padding: 20px;
+    margin-left: 100px; /* Move content further to the right */
+    padding-right: 50px;
+}
+
+.synopsis h2 {
+    font-size: 2rem; /* Increase the font size of the synopsis heading */
+    margin-bottom: 10px;
+}
+
+.synopsis p {
+    font-size: 1.2rem; /* Increase the font size of the synopsis text */
+    line-height: 1.5;
+}
+
+/* Media Queries */
+@media (max-width: 1024px) {
+    .movie-details {
+        flex-direction: row;
+        align-items: flex-start;
+        margin-left: 50px; /* Adjust margin for tablet view */
+        padding: 20px;
+    }
+
+    .poster img {
+        width: 200px;
+    }
+
+    .details {
+        margin-left: 40px; /* Adjust margin for tablet view */
+    }
+
+    .details h1 {
+        font-size: 2rem;
+    }
+
+    .details p {
+        font-size: 1rem;
+    }
+
+    .buttons {
+        display: flex;
+        justify-content: flex-start;
+    }
+}
+
+@media (max-width: 768px) {
+    .movie-banner {
+        height: 40vh; /* Adjusted height for mobile banner */
+    }
+
+    .movie-details {
+        flex-direction: column;
+        align-items: center;
+        margin-left: 0; /* Reset margin for mobile view */
+        padding: 10px;
+    }
+
+    .poster img {
+        width: 150px;
+    }
+
+    .details {
+        margin-left: 0; /* Reset margin for mobile view */
+        text-align: center;
+    }
+
+    .details h1 {
+        font-size: 1.5rem;
+    }
+
+    .details p {
+        font-size: 0.9rem;
+    }
+
+    .buttons {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    .buttons button {
+        margin-bottom: 10px;
+        padding: 8px 16px;
+    }
+
+    .synopsis-container {
+        padding: 10px 0; /* Adjusted padding for mobile view */
+    }
+
+    .synopsis {
+        padding: 10px;
+        margin-left: 10px; /* Reduced margin for mobile view */
+        padding-right: 10px;
+    }
+
+    .synopsis h2 {
+        font-size: 1.5rem;
+    }
+
+    .synopsis p {
+        font-size: 1rem;
+    }
+}

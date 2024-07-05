@@ -1,0 +1,174 @@
+/* src/style/comingSoon.css */
+
+.youtube-video {
+    width: 100%;
+    height: 100%;
+}
+
+.video-modal .modal-content {
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center; /* Center content horizontally */
+    align-items: center;     /* Center content vertically */
+}
+
+.video-modal .modal-body {
+    padding: 0;
+    display: flex;
+    justify-content: center; /* Center video horizontally */
+    align-items: center;     /* Center video vertically */
+}
+
+.coming-soon-container {
+    padding: 20px;
+    background-color: #f3f3f3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.coming-soon-title {
+    padding-top: 30px;
+    font-size: 40px;
+    margin: 0;
+    font-family: 'Judson', serif;
+    font-weight: bold;
+}
+
+.image-container {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap; /* Wrap images for smaller screens */
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 130px;
+}
+
+.image-wrapper {
+    position: relative;
+    margin: 20px; /* Add margin around each image */
+}
+
+.coming-soon-image {
+    max-width: 400px;
+    max-height: 247px;
+    width: 100%;
+    height: auto;
+    transition: transform 0.3s ease; /* Add transition for smooth animation */
+}
+
+.image-wrapper:hover .coming-soon-image {
+    transform: translateY(10px); /* Move the image down by 10px on hover */
+}
+
+.image-box {
+    position: absolute;
+    top: 90%;
+    left: 5%;
+    width: 90%;
+    height: 150px;
+    background-color: rgb(255, 255, 255);
+    z-index: 1;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.box-content {
+    padding: 10px;
+    text-align: left;
+    width: 100%; /* Ensure full width for left alignment */
+}
+
+.box-content h3 {
+    margin: 0;
+    font-size: 23px;
+    color: black;
+    font-weight: bold;
+    text-align: center; /* Center align the heading */
+}
+
+.box-content .details {
+    display: flex;
+    justify-content: space-between; /* Align category and runtime on the same line */
+    margin: 10px 45px;
+}
+
+.box-content .details p {
+    margin: 0;
+    font-size: 16px;
+    color: black;
+}
+
+.box-content button {
+    margin-top: 10px;
+    margin-left: 45px;
+    padding: 5px 10px;
+    font-size: 14px;
+    background-color: #f39c12;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.box-content button:hover {
+    background-color: #e67e22;
+}
+
+.icon-tag {
+    color: orange; 
+    margin-right: 5px; /* Add some space after the icon */
+}
+
+.carousel-control-next,
+.carousel-control-prev /*, .carousel-indicators */ {
+    filter: invert(100%);
+}
+
+@media (max-width: 768px) {
+    .image-wrapper {
+        margin: 110px 10px; /* Increase margin for smaller screens to avoid overlap */
+    }
+
+    .coming-soon-title {
+        font-size: 30px; /* Adjust title size for small screens */
+    }
+
+    .box-content h3 {
+        font-size: 20px; /* Adjust heading size for small screens */
+    }
+
+    .box-content .details p {
+        font-size: 14px; /* Adjust text size for small screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .coming-soon-title {
+        font-size: 24px; 
+    }
+
+    .image-wrapper {
+        width: 100%; /* Full width for very small screens */
+        margin: 90px 0; /* Increase top and bottom margin for very small screens */
+    }
+
+    .box-content {
+        padding: 5px; /* Reduce padding for very small screens */
+    }
+
+    .box-content h3 {
+        font-size: 18px; /* Adjust heading size for very small screens */
+    }
+
+    .box-content .details p {
+        font-size: 12px; /* Adjust text size for very small screens */
+    }
+}

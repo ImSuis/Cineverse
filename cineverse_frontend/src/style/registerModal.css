@@ -1,0 +1,77 @@
+/* src/style/registerModal.css */
+
+@import url('https://fonts.googleapis.com/css2?family=Judson:wght@700&display=swap'); /* Import Judson font with bold weight */
+
+.modal-dialog {
+    max-width: 500px; /* Increase the max width of the modal */
+    margin: 1.75rem auto; /* Center the modal vertically */
+}
+
+.modal-content {
+    background-color: white;
+    border: none;
+    border-radius: 0; /* Remove border radius */
+    padding: 20px; /* Add some padding to the content */
+    font-family: 'Judson', serif; /* Apply Judson font to all content in the modal */
+}
+
+.modal-header {
+    border-bottom: none;
+    display: flex;
+    justify-content: center; /* Center the header content */
+    padding-bottom: 0;
+    padding-top: 10px; /* Decrease margin above the title */
+}
+
+.modal-title {
+    font-family: 'Judson', serif;
+    font-weight: bold;
+    font-size: 38px;
+    color: black;
+    text-align: center; /* Center the text */
+    margin-top: 0; /* Decrease margin above the title */
+}
+
+.modal-body {
+    padding-top: 10px;
+}
+
+.modal-footer {
+    border-top: none;
+    justify-content: center; /* Center the footer buttons */
+    padding-top: 0;
+    padding-bottom: 10px; /* Decrease the margin at the bottom */
+    flex-direction: column;
+}
+
+.form-control {
+    border-radius: 0; /* Remove border radius from form controls */
+    font-family: 'Judson', serif; /* Apply Judson font to form controls */
+}
+
+.form-label {
+    font-family: 'Judson', serif; /* Apply Judson font to form labels */
+}
+
+.btn-orange {
+    background-color: orange;
+    border-color: orange;
+    color: white;
+    width: 100%;
+    border-radius: 0; /* Remove border radius from button */
+    font-family: 'Judson', serif; /* Apply Judson font to button */
+    font-size: 24px;
+    margin-bottom: 5px; /* Adjust margin-bottom to bring the button closer to the edge */
+}
+
+.btn-orange:hover {
+    background-color: darkorange;
+    border-color: darkorange;
+}
+
+.login-text {
+    font-family: 'Judson', serif;
+    font-size: 14px;
+    text-align: center;
+    margin-top: 10px;
+}
