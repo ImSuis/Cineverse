@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Carousel } from 'react-bootstrap';
 import { BsFillTicketPerforatedFill } from "react-icons/bs";
+import { Link } from 'react-router-dom';
 import '../style/nowShowing.css';
 
 const NowShowing = () => {
@@ -54,10 +55,12 @@ const NowShowing = () => {
                         <div className="poster-container">
                             {movieGroup.map(movie => (
                                 <div key={movie.id} className="poster-wrapper">
-                                    <img src={movie.posterUrl} className="now-showing-poster" alt="Movie Poster" />
-                                    <div className="ticket-icon">
-                                        <BsFillTicketPerforatedFill size={24} />
-                                    </div>
+                                    <Link to={`/movie/${movie.id}`}>
+                                        <img src={movie.posterUrl} className="now-showing-poster" alt="Movie Poster" />
+                                        <div className="ticket-icon">
+                                            <BsFillTicketPerforatedFill size={24} />
+                                        </div>
+                                    </Link>
                                 </div>
                             ))}
                         </div>

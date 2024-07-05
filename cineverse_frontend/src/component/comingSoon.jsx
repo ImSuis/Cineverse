@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Carousel, Modal } from 'react-bootstrap';
 import { FaClock, FaTag } from 'react-icons/fa';
 import YouTube from 'react-youtube';
+import { Link } from 'react-router-dom';
 import '../style/comingSoon.css';
 
 const ComingSoon = () => {
@@ -69,7 +70,7 @@ const ComingSoon = () => {
                                     <img src={movie.landscapeImageUrl} className="coming-soon-image" alt="Movie Poster" />
                                     <div className="image-box">
                                         <div className="box-content">
-                                            <h3>{movie.title}</h3>
+                                            <h3><Link to={`/movie/${movie.id}`}>{movie.title}</Link></h3>
                                             <div className="details">
                                                 <p><FaTag className="icon-tag" /> {movie.genre}</p>
                                                 <p><FaClock className="icon-tag" /> {formatRuntime(movie.runtime)}</p>
