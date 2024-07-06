@@ -5,11 +5,12 @@ const User = require("../model/userModel");
 
 exports.createBooking = async (req, res) => {
   try {
-    const { userId, movieId, location, date, showtime, seats, totalPrice } = req.body;
+    const { movieId, location, date, showtime, seats, totalPrice } = req.body;
+    const userId = req.user.id;
 
     const booking = await Booking.create({
-      userId,
-      movieId,
+      UserId: userId,
+      MovieId: movieId,
       location,
       date,
       showtime,
@@ -25,9 +26,9 @@ exports.createBooking = async (req, res) => {
 
 exports.getBookingsByUser = async (req, res) => {
   try {
-    const { userId } = req.params;
+    const userId = req.user.id;
     const bookings = await Booking.findAll({
-      where: { userId },
+      where: { UserId: userId },
       include: [Movie],
     });
 

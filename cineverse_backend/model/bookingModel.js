@@ -1,10 +1,9 @@
-// models/booking.js
-const { DataTypes } = require("sequelize");
-const sequelize = require("../database/db");
-const User = require("./userModel");
-const Movie = require("./movieModel");
+const { DataTypes } = require('sequelize');
+const sequelize = require('../database/db'); // Ensure correct path
+const User = require('./userModel'); // Ensure correct path
+const Movie = require('./movieModel'); // Ensure correct path
 
-const Booking = sequelize.define("Booking", {
+const Booking = sequelize.define('Booking', {
   location: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -27,7 +26,7 @@ const Booking = sequelize.define("Booking", {
   },
 });
 
-// Establishing relationships
+// Define associations after all models are defined
 User.hasMany(Booking);
 Booking.belongsTo(User);
 Movie.hasMany(Booking);
