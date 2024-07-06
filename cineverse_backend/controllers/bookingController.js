@@ -1,19 +1,16 @@
-// controllers/bookingController.js
 const Booking = require("../model/bookingModel");
 const Movie = require("../model/movieModel");
+const Schedule = require("../model/scheduleModel");
 const User = require("../model/userModel");
 
 exports.createBooking = async (req, res) => {
   try {
-    const { movieId, location, date, showtime, seats, totalPrice } = req.body;
+    const { scheduleId, seats, totalPrice } = req.body;
     const userId = req.user.id;
 
     const booking = await Booking.create({
       UserId: userId,
-      MovieId: movieId,
-      location,
-      date,
-      showtime,
+      ScheduleId: scheduleId,
       seats,
       totalPrice,
     });
@@ -29,7 +26,7 @@ exports.getBookingsByUser = async (req, res) => {
     const userId = req.user.id;
     const bookings = await Booking.findAll({
       where: { UserId: userId },
-      include: [Movie],
+      include: [Schedule],
     });
 
     res.status(200).json(bookings);
