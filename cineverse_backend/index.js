@@ -2,7 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const multiparty = require("connect-multiparty");
-const cloudinary = require("cloudinary").v2; // Import Cloudinary v2
+const cloudinary = require("cloudinary").v2;
 
 // Initialize dotenv to read .env file
 dotenv.config();
@@ -29,10 +29,25 @@ cloudinary.config({
 // Middleware to parse JSON bodies
 app.use(express.json());
 
+// Import models and associations
+require("./model/userModel");
+require("./model/scheduleModel");
+require("./model/seatModel");
+require("./model/movieModel");
+require("./model/locationModel");
+require("./model/showtimeModel");
+require("./model/association");
+
+// Initialize database
+require("./database/init");
+
 // Routes
 app.use("/api/movies", require("./routes/movieRoutes"));
 app.use("/api/users", require("./routes/userRoutes"));
 app.use("/api/bookings", require("./routes/bookingRoutes"));
+app.use("/api/locations", require("./routes/locationRoutes"));
+app.use("/api/seats", require("./routes/seatRoutes"));
+app.use("/api/schedules", require("./routes/scheduleRoutes"));
 
 // Error handling middleware
 app.use((err, req, res, next) => {
