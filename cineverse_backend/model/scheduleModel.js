@@ -1,23 +1,26 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../database/db');
-const Movie = require('./movieModel');
-const Location = require('./locationModel');
-const Showtime = require('./showtimeModel');
+const { DataTypes, Model } = require("sequelize");
+const sequelize = require("../database/db");
+const Seat = require("./seatModel"); // Correct import path
+const ScheduleSeat = require("./scheduleSeatModel"); // Correct import path
 
-const Schedule = sequelize.define('Schedule', {
-  date: {
-    type: DataTypes.DATEONLY,
-    allowNull: false,
+class Schedule extends Model {}
+
+Schedule.init(
+  {
+    date: {
+      type: DataTypes.DATEONLY,
+      allowNull: false,
+    },
   },
-});
+  {
+    sequelize,
+    modelName: "Schedule",
+  }
+);
 
-Movie.hasMany(Schedule);
-Schedule.belongsTo(Movie);
-
-Location.hasMany(Schedule);
-Schedule.belongsTo(Location);
-
-Showtime.hasMany(Schedule);
-Schedule.belongsTo(Showtime);
+Schedule.belongsToMany(Seat, { through: ScheduleSeat });
+// Optionally, if you need to relate Schedule to User (through Booking):
+// Schedule.hasMany(Booking);
+// Booking.belongsTo(Schedule);
 
 module.exports = Schedule;

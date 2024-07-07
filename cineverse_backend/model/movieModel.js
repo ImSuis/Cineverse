@@ -1,6 +1,5 @@
-// models/movie.js
 const { DataTypes } = require("sequelize");
-const sequelize = require("../database/db"); // Import the Sequelize instance
+const sequelize = require("../database/db");
 
 const Movie = sequelize.define("Movie", {
   title: {
@@ -13,14 +12,14 @@ const Movie = sequelize.define("Movie", {
   },
   releaseDate: {
     type: DataTypes.DATE,
-    allowNull: true, // Allow releaseDate to be null
+    allowNull: true,
   },
   genre: {
     type: DataTypes.STRING,
     allowNull: false,
   },
   runtime: {
-    type: DataTypes.INTEGER, // Runtime in minutes
+    type: DataTypes.INTEGER,
     allowNull: true,
   },
   director: {
@@ -28,7 +27,7 @@ const Movie = sequelize.define("Movie", {
     allowNull: false,
   },
   cast: {
-    type: DataTypes.ARRAY(DataTypes.STRING), // Array of strings for cast members
+    type: DataTypes.ARRAY(DataTypes.STRING),
     allowNull: false,
   },
   language: {
@@ -44,11 +43,11 @@ const Movie = sequelize.define("Movie", {
     allowNull: false,
   },
   trailerUrl: {
-    type: DataTypes.STRING, // URL to the movie trailer
+    type: DataTypes.STRING,
     allowNull: true,
   },
   rating: {
-    type: DataTypes.FLOAT, // Average rating
+    type: DataTypes.FLOAT,
     allowNull: true,
   },
 });

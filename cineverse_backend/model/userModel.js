@@ -1,8 +1,12 @@
-// models/user.js
-const { DataTypes } = require('sequelize');
+const { DataTypes, Model } = require('sequelize');
 const sequelize = require('../database/db'); // Import the Sequelize instance
+const ScheduleSeat = require('./scheduleSeatModel'); // Correct import path
+const Seat = require('./seatModel'); // Correct import path
 
-const User = sequelize.define('User', {
+class User extends Model {}
+
+User.init(
+  {
     name: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -20,6 +24,15 @@ const User = sequelize.define('User', {
       type: DataTypes.BOOLEAN,
       defaultValue: false, // Default to false
     },
-  });
-  
-  module.exports = User;
+  },
+  {
+    sequelize,
+    modelName: 'User',
+  }
+);
+
+User.belongsToMany(Seat, { through: ScheduleSeat });
+// Optionally, if you need to relate User to Schedule (through Booking):
+// User.belongsToMany(Schedule, { through: Booking });
+
+module.exports = User;

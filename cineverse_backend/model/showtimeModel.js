@@ -1,7 +1,7 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../database/db');
+const { DataTypes } = require("sequelize");
+const sequelize = require("../database/db");
 
-const Showtime = sequelize.define('Showtime', {
+const Showtime = sequelize.define("Showtime", {
   time: {
     type: DataTypes.TIME,
     allowNull: false,
