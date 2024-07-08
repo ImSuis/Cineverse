@@ -28,15 +28,20 @@ const loginUser = async (req, res) => {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
-    const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_TOKEN_SECRET, {
-      expiresIn: '1h',
-    });
+    const token = jwt.sign(
+      { id: user.id, email: user.email, isAdmin: user.isAdmin }, // Include isAdmin in the token
+      process.env.JWT_TOKEN_SECRET,
+      {
+        expiresIn: '1h',
+      }
+    );
 
     // Include user details in the response
     const userDetails = {
       id: user.id,
       email: user.email,
       name: user.name, // Include other user details as needed
+      isAdmin: user.isAdmin, // Include isAdmin in the response
     };
 
     res.status(200).json({ message: 'Login successful', token, user: userDetails });
@@ -44,6 +49,5 @@ const loginUser = async (req, res) => {
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
-
 
 module.exports = { registerUser, loginUser };
