@@ -48,6 +48,7 @@ app.use("/api/bookings", require("./routes/bookingRoutes"));
 app.use("/api/locations", require("./routes/locationRoutes"));
 app.use("/api/seats", require("./routes/seatRoutes"));
 app.use("/api/schedules", require("./routes/scheduleRoutes"));
+app.use("/api/showtimes", require("./routes/showtimeRoutes"));
 
 // Error handling middleware
 app.use((err, req, res, next) => {
