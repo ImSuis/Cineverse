@@ -1,7 +1,6 @@
 const { DataTypes, Model } = require('sequelize');
-const sequelize = require('../database/db'); // Import the Sequelize instance
-const ScheduleSeat = require('./scheduleSeatModel'); // Correct import path
-const Seat = require('./seatModel'); // Correct import path
+const sequelize = require('../database/db');
+const ScheduleSeat = require('./scheduleSeatModel');
 
 class User extends Model {}
 
@@ -22,7 +21,7 @@ User.init(
     },
     isAdmin: {
       type: DataTypes.BOOLEAN,
-      defaultValue: false, // Default to false
+      defaultValue: false,
     },
   },
   {
@@ -31,8 +30,6 @@ User.init(
   }
 );
 
-User.belongsToMany(Seat, { through: ScheduleSeat });
-// Optionally, if you need to relate User to Schedule (through Booking):
-// User.belongsToMany(Schedule, { through: Booking });
+User.hasMany(ScheduleSeat);
 
 module.exports = User;

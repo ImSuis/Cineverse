@@ -1,5 +1,7 @@
 const { DataTypes, Model } = require('sequelize');
 const sequelize = require('../database/db');
+const Schedule = require('./scheduleModel');
+const Seat = require('./seatModel');
 
 class ScheduleSeat extends Model {}
 
@@ -24,5 +26,9 @@ ScheduleSeat.init(
     tableName: 'ScheduleSeats', // Optional: specify the table name explicitly
   }
 );
+
+// Ensure ScheduleSeat associations are correct
+ScheduleSeat.belongsTo(Schedule);
+ScheduleSeat.belongsTo(Seat);
 
 module.exports = ScheduleSeat;
