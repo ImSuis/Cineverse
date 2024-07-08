@@ -5,5 +5,6 @@ const { authGuard } = require("../middleware/authGuard"); // Import authGuard mi
 
 // Define routes
 router.post("/create", authGuard, bookingController.createBooking);
+router.get("/user", authGuard, bookingController.getBookingsByUserId);
 
 module.exports = router;
