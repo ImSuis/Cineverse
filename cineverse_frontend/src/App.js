@@ -1,14 +1,8 @@
 // src/App.js
 
 import React, { useState, useEffect } from "react";
-import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import Navbar from "./component/navbar";
-import LoginModal from "./component/loginModal";
-import RegisterModal from "./component/registerModal";
-import Homepage from "./pages/homepage";
-import Movie from "./pages/movie";
-import SeatSelection from "./pages/seatSelection";
-import { ToastContainer } from "react-toastify";
+import { BrowserRouter as Router } from "react-router-dom";
+import Main from "./main";
 
 function App() {
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -37,26 +31,18 @@ function App() {
 
   return (
     <Router>
-      <Navbar
+      <Main
+        showLoginModal={showLoginModal}
         handleLoginModalShow={handleLoginModalShow}
+        handleLoginModalClose={handleLoginModalClose}
+        showRegisterModal={showRegisterModal}
         handleRegisterModalShow={handleRegisterModalShow}
+        handleRegisterModalClose={handleRegisterModalClose}
         isLoggedIn={isLoggedIn}
         user={user}
-      />
-      <ToastContainer />
-      <Routes>
-        <Route path="/" element={<Homepage />} />
-        <Route path="/seat-selection" element={<SeatSelection />} />
-        <Route path="/movie/:id" element={<Movie />} />
-
-      </Routes>
-      <LoginModal
-        show={showLoginModal}
-        handleClose={handleLoginModalClose}
         setIsLoggedIn={setIsLoggedIn}
         setUser={setUser}
       />
-      <RegisterModal show={showRegisterModal} handleClose={handleRegisterModalClose} />
     </Router>
   );
 }

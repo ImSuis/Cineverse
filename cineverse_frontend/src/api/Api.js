@@ -42,6 +42,12 @@ export const loginUserApi = async (data) => {
 
 export const logoutUser = () => {
   localStorage.removeItem("token");
+  localStorage.removeItem("user");
 };
 
+export const getAuthorizationHeader = () => ({
+  headers: {
+    authorization: `Bearer ${localStorage.getItem("token")}`, // Include authorization token from local storage
+  },
+});
 
