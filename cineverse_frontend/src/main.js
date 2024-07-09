@@ -16,6 +16,7 @@ import Movie from "./pages/movie";
 import SeatSelection from "./pages/seatSelection";
 import AdminRoutes from "./protected/adminRoutes";
 import ManageShowtimes from "./pages/admin/manageShowtimes";
+import AddShowtime from "./pages/admin/addShowtimes";
 
 const Main = ({
   showLoginModal,
@@ -54,6 +55,7 @@ const Main = ({
           <Route path="/admin/locations" element={<ManageLocations />} />
           <Route path="/admin/locations/add" element={<AddLocation />} />
           <Route path="/admin/showtimes" element={<ManageShowtimes />} />
+          <Route path="/admin/showtimes/add" element={<AddShowtime />} />
           {/* <Route path="/admin/edit/:id" element={<AdminEdit />} /> */}
         </Route>
       </Routes>
