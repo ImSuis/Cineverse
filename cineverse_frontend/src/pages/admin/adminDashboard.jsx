@@ -1,7 +1,7 @@
 // src/pages/admin/AdminDashboard.js
 
 import React from 'react';
-import Sidebar from './sidebar';
+import Sidebar from '../admin/sidebar'; // Update the path as per your directory structure
 import './style/adminDashboard.css'; // Assuming you will add some CSS for layout
 
 const AdminDashboard = () => {
@@ -10,7 +10,6 @@ const AdminDashboard = () => {
             <Sidebar />
             <div className="admin-content">
                 <h1>Welcome to the Admin Dashboard!</h1>
-                {/* Add your content here */}
             </div>
         </div>
     );
