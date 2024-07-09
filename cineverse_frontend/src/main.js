@@ -12,6 +12,8 @@ import { ToastContainer } from "react-toastify";
 import AdminRoutes from "./protected/adminRoutes";
 import AdminDashboard from "./pages/admin/adminDashboard";
 import ManageMovies from "./pages/admin/manageMovies";
+import AddMovie from "./pages/admin/addMovie";
+import ManageLocations from "./pages/admin/manageLocations";
 
 const Main = ({
   showLoginModal,
@@ -47,6 +49,8 @@ const Main = ({
             
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/admin/movies" element={<ManageMovies />} />
+          <Route path="/admin/movies/add" element={<AddMovie />} />
+          <Route path="/admin/locations" element={<ManageLocations />} />
           {/* <Route path="/admin/edit/:id" element={<AdminEdit />} /> */}
         </Route>
       </Routes>

@@ -4,9 +4,11 @@ import React, { useEffect, useState } from 'react';
 import { Table, Button } from 'react-bootstrap';
 import Sidebar from '../admin/sidebar';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const ManageMovies = () => {
     const [movies, setMovies] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetchMovies();
@@ -21,13 +23,17 @@ const ManageMovies = () => {
         }
     };
 
+    const handleAddMovie = () => {
+        navigate('/admin/movies/add');
+    };
+
     return (
         <div className="admin-dashboard">
             <Sidebar />
             <div className="admin-content">
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
                     <h1 style={{ margin: '0' }}>Manage Movies Page</h1>
-                    <Button variant="primary">Add Movie</Button>
+                    <Button variant="primary" onClick={handleAddMovie}>Add Movie</Button>
                 </div>
                 <Table striped bordered hover>
                     <thead>
