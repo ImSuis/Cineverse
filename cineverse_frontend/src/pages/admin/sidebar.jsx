@@ -52,9 +52,9 @@ const Sidebar = () => {
                         </Link>
                     </li>
                     <li>
-                        <Link to="/admin/bookings">
+                        <Link to="/admin/schedules">
                             <FaTicketAlt className="sidebar-icon" />
-                            Manage Bookings
+                            Manage schedule
                         </Link>
                     </li>
                     {/* Add more links as needed */}

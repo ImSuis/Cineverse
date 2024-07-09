@@ -1,5 +1,8 @@
 const Schedule = require("../model/scheduleModel");
 const Seat = require("../model/seatModel");
+const Movie = require("../model/movieModel");
+const Location = require("../model/locationModel");
+const Showtime = require("../model/showtimeModel");
 
 // Create a new schedule
 exports.createSchedule = async (req, res) => {
@@ -23,6 +26,11 @@ exports.createSchedule = async (req, res) => {
 exports.getAllSchedules = async (req, res) => {
   try {
     const schedules = await Schedule.findAll({
+      include: [
+        { model: Movie, attributes: ['title'] },
+        { model: Location, attributes: ['name'] },
+        { model: Showtime, attributes: ['time'] }
+      ]
     });
     res.status(200).json(schedules);
   } catch (error) {
