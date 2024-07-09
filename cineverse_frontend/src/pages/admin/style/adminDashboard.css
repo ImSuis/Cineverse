@@ -5,7 +5,16 @@
 }
 
 .admin-content {
-    margin-left: 220px; /* Adjust according to sidebar width */
+    margin-left: 240px; /* Adjust according to sidebar width */
     padding: 20px;
-    width: 100%;
+    width: calc(100% - 240px); /* Calculate width to fill remaining space */
+    overflow-x: auto; /* Enable horizontal scrolling if content exceeds width */
+}
+
+.admin-content h1 {
+    margin-bottom: 10px; /* Adjust spacing below the heading */
+}
+
+.admin-content .btn-primary {
+    margin-left: 10px; /* Adjust margin between heading and button */
 }
