@@ -2,18 +2,20 @@
 
 import React from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
-import Navbar from "./component/navbar";
+import { ToastContainer } from "react-toastify";
 import LoginModal from "./component/loginModal";
+import Navbar from "./component/navbar";
 import RegisterModal from "./component/registerModal";
+import AddLocation from "./pages/admin/addLocations";
+import AddMovie from "./pages/admin/addMovie";
+import AdminDashboard from "./pages/admin/adminDashboard";
+import ManageLocations from "./pages/admin/manageLocations";
+import ManageMovies from "./pages/admin/manageMovies";
 import Homepage from "./pages/homepage";
 import Movie from "./pages/movie";
 import SeatSelection from "./pages/seatSelection";
-import { ToastContainer } from "react-toastify";
 import AdminRoutes from "./protected/adminRoutes";
-import AdminDashboard from "./pages/admin/adminDashboard";
-import ManageMovies from "./pages/admin/manageMovies";
-import AddMovie from "./pages/admin/addMovie";
-import ManageLocations from "./pages/admin/manageLocations";
+import ManageShowtimes from "./pages/admin/manageShowtimes";
 
 const Main = ({
   showLoginModal,
@@ -25,7 +27,7 @@ const Main = ({
   isLoggedIn,
   user,
   setIsLoggedIn,
-  setUser
+  setUser,
 }) => {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith("/admin");
@@ -46,11 +48,12 @@ const Main = ({
         <Route path="/seat-selection" element={<SeatSelection />} />
         <Route path="/movie/:id" element={<Movie />} />
         <Route element={<AdminRoutes />}>
-            
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/admin/movies" element={<ManageMovies />} />
           <Route path="/admin/movies/add" element={<AddMovie />} />
           <Route path="/admin/locations" element={<ManageLocations />} />
+          <Route path="/admin/locations/add" element={<AddLocation />} />
+          <Route path="/admin/showtimes" element={<ManageShowtimes />} />
           {/* <Route path="/admin/edit/:id" element={<AdminEdit />} /> */}
         </Route>
       </Routes>
@@ -60,7 +63,10 @@ const Main = ({
         setIsLoggedIn={setIsLoggedIn}
         setUser={setUser}
       />
-      <RegisterModal show={showRegisterModal} handleClose={handleRegisterModalClose} />
+      <RegisterModal
+        show={showRegisterModal}
+        handleClose={handleRegisterModalClose}
+      />
     </>
   );
 };

@@ -40,6 +40,18 @@ const Sidebar = () => {
                         </Link>
                     </li>
                     <li>
+                        <Link to="/admin/locations">
+                            <FaTicketAlt className="sidebar-icon" />
+                            Manage Locations
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="/admin/showtimes">
+                            <FaTicketAlt className="sidebar-icon" />
+                            Manage Showtimes
+                        </Link>
+                    </li>
+                    <li>
                         <Link to="/admin/bookings">
                             <FaTicketAlt className="sidebar-icon" />
                             Manage Bookings
