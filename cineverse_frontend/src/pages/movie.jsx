@@ -5,12 +5,15 @@ import { FaClock } from "react-icons/fa";
 import { useParams } from 'react-router-dom';
 import YouTube from 'react-youtube';
 import '../style/movie.css'; // Ensure to create and style this CSS file accordingly
+import ScheduleModal from '../component/scheduleModal'; // Import the ScheduleModal component
 
 const Movie = () => {
     const { id } = useParams();
     const [movie, setMovie] = useState(null);
-    const [show, setShow] = useState(false);
+    const [showModal, setShowModal] = useState(false); // State to control modal visibility
+    const [schedule, setSchedule] = useState({ dates: [], schedules: {} }); // State to hold schedules
     const [videoId, setVideoId] = useState('');
+    const [show, setShow] = useState(false); // State to control YouTube video modal visibility
 
     useEffect(() => {
         const fetchMovie = async () => {
@@ -35,13 +38,13 @@ const Movie = () => {
         const id = extractVideoId(url);
         if (id) {
             setVideoId(id);
-            setShow(true);
+            setShowModal(true);
         } else {
             console.error('Invalid YouTube URL');
         }
     };
 
-    const handleClose = () => setShow(false);
+    const handleClose = () => setShowModal(false);
 
     // Function to check if release date is greater than current date
     const isReleased = () => {
@@ -51,6 +54,24 @@ const Movie = () => {
         const releaseDate = new Date(movie.releaseDate);
         const currentDate = new Date();
         return releaseDate <= currentDate; // Return true if release date is less than or equal to current date
+    };
+
+    // Function to fetch schedules when "Get Ticket" button is clicked
+    const handleGetTicket = async () => {
+        try {
+            const response = await axios.get(`http://localhost:5001/api/schedules/movie/${id}`);
+            console.log('Backend response:', response.data); // Log the response data
+            const groupedSchedules = response.data;
+            const dates = Object.keys(groupedSchedules);
+
+            // Determine the first date for the movie
+            const initialDate = dates.length > 0 ? dates[0] : null;
+
+            setSchedule({ dates, schedules: groupedSchedules });
+            setShowModal(true);
+        } catch (error) {
+            console.error('Error fetching schedules:', error.message);
+        }
     };
 
     if (!movie) {
@@ -77,7 +98,7 @@ const Movie = () => {
                     <p><strong>Rating:</strong> {movie.rating}</p>
                     <div className="buttons">
                         <button onClick={() => handleShow(movie.trailerUrl)}>Watch Trailer</button>
-                        {isReleased() && <button>Get Ticket</button>}
+                        {isReleased() && <button onClick={handleGetTicket}>Get Ticket</button>}
                     </div>
                 </div>
             </div>
@@ -89,6 +110,15 @@ const Movie = () => {
                 </div>
             </div>
 
+            {/* Render the ScheduleModal component */}
+            <ScheduleModal
+                show={showModal}
+                handleClose={handleClose}
+                schedule={schedule}
+                initialDate={schedule.dates.length > 0 ? schedule.dates[0] : null}
+            />
+
+            {/* Render the YouTube video modal */}
             <Modal show={show} onHide={handleClose} centered dialogClassName="video-modal">
                 <Modal.Body className="p-0">
                     <YouTube videoId={videoId} className="youtube-video" />
