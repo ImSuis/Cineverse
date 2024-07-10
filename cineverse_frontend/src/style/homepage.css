@@ -1,26 +1,43 @@
-html {
-    scroll-behavior: smooth;
+.carousel-image {
+    height: 800px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
 }
 
-/* Apply styles to the carousel indicators */
+.get-ticket-button {
+    position: absolute;
+    bottom: 70px; /* Adjust position as needed */
+    left: 80px; /* Adjust position as needed */
+    background-color: orange;
+    color: white;
+    border: none;
+    padding: 10px 20px; /* Adjust padding as needed */
+    cursor: pointer;
+    font-size: 16px; /* Adjust font size as needed */
+    font-weight: bold; /* Adjust font weight as needed */
+}
+
+.get-ticket-button:hover {
+    background-color: darkorange;
+}
+
 .custom-carousel .carousel-indicators {
     bottom: 20px; /* Adjust position as needed */
     display: flex;
     justify-content: center; /* Center align the indicators */
 }
 
-/* Apply styles to the carousel indicator items */
 .custom-carousel .carousel-indicators li {
     background-color: rgba(255, 255, 255, 0.5); /* Default color for inactive circles */
     border: none;
     border-radius: 50%; /* Make the indicator a circle */
     width: 10px; /* Adjust size of circles */
-    height: 10px; 
+    height: 10px;
     margin: 0 5px; /* Adjust spacing between circles */
     cursor: pointer; /* Show pointer cursor on hover */
 }
 
-/* Apply styles to the active carousel indicator item */
 .custom-carousel .carousel-indicators .active {
     background-color: orange; /* Color for active circle */
 }
@@ -30,13 +47,6 @@ html {
     font-family: 'Judson', serif; /* Apply the Judson font */
 }
 
-.carousel-image {
-    height: 800px;
-    background-size: cover;
-    background-position: center;
-}
-
-/* Media queries for responsiveness */
 @media (max-width: 768px) {
     .carousel-image {
         height: 500px; /* Adjust height for smaller screens */
