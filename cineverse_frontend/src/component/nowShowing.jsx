@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { Carousel } from 'react-bootstrap';
 import { BsFillTicketPerforatedFill } from "react-icons/bs";
 import { Link } from 'react-router-dom';
-import ScheduleModal from './scheduleModal';
 import '../style/nowShowing.css';
+import ScheduleModal from './scheduleModal';
 
 const NowShowing = () => {
     const [nowShowingMovies, setNowShowingMovies] = useState([]);
@@ -42,6 +42,7 @@ const NowShowing = () => {
     const handleIconClick = async (movieId) => {
         try {
             const response = await axios.get(`http://localhost:5001/api/schedules/movie/${movieId}`);
+            console.log('Backend response:', response.data); // Log the response data
             const groupedSchedules = response.data;
             const dates = Object.keys(groupedSchedules);
 

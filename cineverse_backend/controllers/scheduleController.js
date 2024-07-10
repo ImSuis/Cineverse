@@ -38,7 +38,6 @@ exports.getAllSchedules = async (req, res) => {
   }
 };
 
-// Schedule controller (controllers/scheduleController.js)
 exports.getAllSchedulesByMovie = async (req, res) => {
   try {
     const { movieId } = req.params;
@@ -52,15 +51,25 @@ exports.getAllSchedulesByMovie = async (req, res) => {
       order: [["date", "ASC"]],
     });
 
+    // Using an object to store unique locations for each date
     const groupedSchedules = schedules.reduce((acc, schedule) => {
       const date = schedule.date;
       if (!acc[date]) {
         acc[date] = [];
       }
-      acc[date].push({
-        location: schedule.Location.name,
-        time: schedule.Showtime.time,
-      });
+      
+      // Check if the location already exists for this date
+      const existingLocation = acc[date].find(item => item.location === schedule.Location.name);
+      if (!existingLocation) {
+        acc[date].push({
+          location: schedule.Location.name,
+          times: [schedule.Showtime.time], // Store times as an array
+        });
+      } else {
+        // Add time to existing location
+        existingLocation.times.push(schedule.Showtime.time);
+      }
+      
       return acc;
     }, {});
 

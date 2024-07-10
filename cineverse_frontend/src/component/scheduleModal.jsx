@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../style/scheduleModal.css'; // Replace with your unique CSS file
 
 const ScheduleModal = ({ show, handleClose, schedule }) => {
@@ -40,16 +40,19 @@ const ScheduleModal = ({ show, handleClose, schedule }) => {
                         </button>
                     ))}
                 </div>
-                {selectedDate && schedule.schedules[selectedDate] && schedule.schedules[selectedDate].map((item, index) => (
+                {selectedDate && schedule.schedules[selectedDate] && schedule.schedules[selectedDate].map((scheduleItem, index) => (
                     <div key={index}>
-                        <p className="cinema-name">{item.location}</p>
+                        <p className="cinema-name">{scheduleItem.location}</p>
                         <div className="unique-modal-time-buttons">
-                            <button
-                                className={`unique-modal-time-button ${selectedTime === item.time ? 'active' : ''}`}
-                                onClick={() => handleTimeClick(item.time)}
-                            >
-                                {item.time}
-                            </button>
+                            {scheduleItem.times.map((time, idx) => (
+                                <button
+                                    key={idx}
+                                    className={`unique-modal-time-button ${selectedTime === time ? 'active' : ''}`}
+                                    onClick={() => handleTimeClick(time)}
+                                >
+                                    {time}
+                                </button>
+                            ))}
                         </div>
                     </div>
                 ))}
