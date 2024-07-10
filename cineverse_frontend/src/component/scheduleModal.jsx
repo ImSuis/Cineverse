@@ -1,48 +1,58 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../style/scheduleModal.css'; // Replace with your unique CSS file
 
 const ScheduleModal = ({ show, handleClose, schedule }) => {
-    const [selectedButton, setSelectedButton] = useState(null);
+    const [selectedDate, setSelectedDate] = useState(null);
+    const [selectedTime, setSelectedTime] = useState(null);
 
-    const handleButtonClick = (index) => {
-        setSelectedButton(index);
+    // Effect to set the initial selected date when modal opens
+    useEffect(() => {
+        if (schedule.dates.length > 0) {
+            setSelectedDate(schedule.dates[0]); // Select the first date by default
+        }
+    }, [schedule]);
+
+    const handleDateClick = (date) => {
+        setSelectedDate(date);
+        setSelectedTime(null); // Reset selected time
     };
 
-    // Example data for buttons (month, day, dayName)
-    const buttonsData = [
-        { month: '11', dayName: 'Sun', day: '11' },
-        { month: '11', dayName: 'Mon', day: '12' },
-        { month: '11', dayName: 'Tue', day: '13' },
-    ];
+    const handleTimeClick = (time) => {
+        setSelectedTime(time);
+    };
 
     return (
         <div className={`unique-modal ${show ? 'show' : ''}`} onClick={handleClose}>
             <div className="unique-modal-content" onClick={(e) => e.stopPropagation()}>
                 <button className="unique-modal-close" onClick={handleClose}>&times;</button>
                 <div className="unique-modal-buttons">
-                    {buttonsData.map((button, index) => (
+                    {schedule.dates.map((date, index) => (
                         <button
                             key={index}
-                            className={`unique-modal-button ${selectedButton === index ? 'active' : ''}`}
-                            onClick={() => handleButtonClick(index)}
+                            className={`unique-modal-button ${selectedDate === date ? 'active' : ''}`}
+                            onClick={() => handleDateClick(date)}
                         >
                             <div className="button-date">
-                                <div className="button-date-month">{button.month}</div>
-                                <div className="button-date-dayName">{button.dayName}</div>
+                                <div className="button-date-month">{new Date(date).toLocaleString('default', { month: 'short' })}</div>
+                                <div className="button-date-dayName">{new Date(date).toLocaleString('default', { weekday: 'short' })}</div>
                             </div>
-                            <div className="button-day">{button.day}</div>
+                            <div className="button-day">{new Date(date).getDate()}</div>
                         </button>
                     ))}
                 </div>
-                {/* Add your modal content here */}
-                {/* Example schedule content */}
-                {schedule && (
-                    <div>
-                        <p>{schedule.title}</p>
-                        <p>{schedule.time}</p>
-                        <p>{schedule.location}</p>
+                {selectedDate && schedule.schedules[selectedDate] && schedule.schedules[selectedDate].map((item, index) => (
+                    <div key={index}>
+                        <p className="cinema-name">{item.location}</p>
+                        <div className="unique-modal-time-buttons">
+                            <button
+                                className={`unique-modal-time-button ${selectedTime === item.time ? 'active' : ''}`}
+                                onClick={() => handleTimeClick(item.time)}
+                            >
+                                {item.time}
+                            </button>
+                        </div>
                     </div>
-                )}
+                ))}
             </div>
         </div>
     );

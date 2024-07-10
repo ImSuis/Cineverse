@@ -3,14 +3,15 @@ import React, { useEffect, useState } from 'react';
 import { Carousel } from 'react-bootstrap';
 import { BsFillTicketPerforatedFill } from "react-icons/bs";
 import { Link } from 'react-router-dom';
-import ScheduleModal from '../component/scheduleModal';
+import ScheduleModal from './scheduleModal';
 import '../style/nowShowing.css';
 
 const NowShowing = () => {
     const [nowShowingMovies, setNowShowingMovies] = useState([]);
     const [postersPerSlide, setPostersPerSlide] = useState(3);
     const [showModal, setShowModal] = useState(false);
-    const [schedule, setSchedule] = useState([]);
+    const [schedule, setSchedule] = useState({ dates: [], schedules: {} });
+    const [selectedMovie, setSelectedMovie] = useState(null);
 
     useEffect(() => {
         const fetchNowShowingMovies = async () => {
@@ -38,7 +39,23 @@ const NowShowing = () => {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    // Group posters into chunks based on postersPerSlide
+    const handleIconClick = async (movieId) => {
+        try {
+            const response = await axios.get(`http://localhost:5001/api/schedules/movie/${movieId}`);
+            const groupedSchedules = response.data;
+            const dates = Object.keys(groupedSchedules);
+
+            // Determine the first date for the movie
+            const initialDate = dates.length > 0 ? dates[0] : null;
+
+            setSchedule({ dates, schedules: groupedSchedules });
+            setSelectedMovie(movieId);
+            setShowModal(true);
+        } catch (error) {
+            console.error('Error fetching schedules:', error.message);
+        }
+    };
+
     const groupedMovies = nowShowingMovies.reduce((acc, movie, index) => {
         const groupIndex = Math.floor(index / postersPerSlide);
         if (!acc[groupIndex]) {
@@ -47,16 +64,6 @@ const NowShowing = () => {
         acc[groupIndex].push(movie);
         return acc;
     }, []);
-
-    const handleIconClick = (movieId) => {
-        // Fetch the schedule for the selected movie (mock data for now)
-        const mockSchedule = [
-            { name: "Kathmandu", times: ["7:30 am", "10:30 am"] },
-            { name: "Lalitpur", times: ["8:30 am", "3:30 pm"] },
-        ];
-        setSchedule(mockSchedule);
-        setShowModal(true);
-    };
 
     return (
         <div className="now-showing-container">
@@ -81,7 +88,7 @@ const NowShowing = () => {
                 ))}
             </Carousel>
             <div className="dotted-line"></div>
-            <ScheduleModal show={showModal} handleClose={() => setShowModal(false)} schedule={schedule} />
+            <ScheduleModal show={showModal} handleClose={() => setShowModal(false)} schedule={schedule} initialDate={schedule.dates.length > 0 ? schedule.dates[0] : null} />
         </div>
     );
 };

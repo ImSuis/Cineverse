@@ -13,7 +13,7 @@ exports.createSchedule = async (req, res) => {
       date,
       MovieId,
       LocationId,
-      ShowtimeId
+      ShowtimeId,
     });
 
     res.status(201).json(newSchedule);
@@ -22,7 +22,6 @@ exports.createSchedule = async (req, res) => {
     res.status(500).json({ message: "Error creating schedule", error });
   }
 };
-
 exports.getAllSchedules = async (req, res) => {
   try {
     const schedules = await Schedule.findAll({
@@ -39,21 +38,53 @@ exports.getAllSchedules = async (req, res) => {
   }
 };
 
-// Get schedule by ID
-exports.getScheduleById = async (req, res) => {
+// Schedule controller (controllers/scheduleController.js)
+exports.getAllSchedulesByMovie = async (req, res) => {
   try {
-    const { id } = req.params;
-    const schedule = await Schedule.findByPk(id, {
+    const { movieId } = req.params;
+    const schedules = await Schedule.findAll({
+      where: { MovieId: movieId },
+      include: [
+        { model: Movie, attributes: ["title"] },
+        { model: Location, attributes: ["name"] },
+        { model: Showtime, attributes: ["time"] },
+      ],
+      order: [["date", "ASC"]],
     });
-    if (!schedule) {
-      return res.status(404).json({ message: "Schedule not found" });
-    }
-    res.status(200).json(schedule);
+
+    const groupedSchedules = schedules.reduce((acc, schedule) => {
+      const date = schedule.date;
+      if (!acc[date]) {
+        acc[date] = [];
+      }
+      acc[date].push({
+        location: schedule.Location.name,
+        time: schedule.Showtime.time,
+      });
+      return acc;
+    }, {});
+
+    res.status(200).json(groupedSchedules);
   } catch (error) {
-    console.error("Error fetching schedule by ID:", error);
-    res.status(500).json({ message: "Error fetching schedule by ID", error });
+    console.error("Error fetching schedules:", error);
+    res.status(500).json({ message: "Error fetching schedules", error });
   }
 };
+
+// Get schedule by ID
+// exports.getScheduleById = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     const schedule = await Schedule.findByPk(id, {});
+//     if (!schedule) {
+//       return res.status(404).json({ message: "Schedule not found" });
+//     }
+//     res.status(200).json(schedule);
+//   } catch (error) {
+//     console.error("Error fetching schedule by ID:", error);
+//     res.status(500).json({ message: "Error fetching schedule by ID", error });
+//   }
+// };
 
 // Update schedule by ID
 exports.updateScheduleById = async (req, res) => {
@@ -70,7 +101,7 @@ exports.updateScheduleById = async (req, res) => {
       date,
       MovieId,
       LocationId,
-      ShowtimeId
+      ShowtimeId,
     });
 
     res.status(200).json(schedule);

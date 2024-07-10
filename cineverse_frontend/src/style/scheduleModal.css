@@ -95,3 +95,34 @@
     font-weight: bold;
     margin-left: auto; /* Push day to the right */
 }
+
+.cinema-name {
+    font-size: 1.5rem;
+    margin-top: 20px;
+    font-weight: bold;
+    text-align: left; /* Align cinema name to the left */
+}
+
+.unique-modal-time-buttons {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.unique-modal-time-button {
+    height: 40px; /* Decreased height */
+    padding: 0 15px; /* Horizontal padding */
+    background-color: #fae8e9; /* Inactive button background color */
+    border: 1.5px solid black; /* Black border */
+    cursor: pointer;
+    font-size: 14px;
+    font-family: 'Judson', serif; /* Use Judson font */
+    margin-right: 20px; /* Margin between buttons */
+    margin-bottom: 20px; /* Margin for wrapping */
+    margin-top: 20px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.unique-modal-time-button:hover {
+    background-color: black; /* Background color on hover */
+    color: white; /* Text color on hover */
+}
