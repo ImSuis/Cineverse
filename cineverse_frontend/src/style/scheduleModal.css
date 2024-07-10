@@ -122,7 +122,35 @@
     transition: background-color 0.3s, color 0.3s;
 }
 
-.unique-modal-time-button:hover {
-    background-color: black; /* Background color on hover */
-    color: white; /* Text color on hover */
+.unique-modal-time-button:hover,
+.unique-modal-time-button.active {
+    background-color: black; /* Background color on hover and active */
+    color: white; /* Text color on hover and active */
+}
+
+.proceed-button {
+    padding: 10px 15px; /* Decrease height by reducing top and bottom padding */
+    background-color: #050505;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-top: 20px;
+    font-size: 1.2em;
+    font-family: 'Judson', serif; /* Use Judson font */
+    font-weight: bold;
+    transition: background-color 0.3s, color 0.3s;
+    display: block; /* Make the button a block element */
+    margin-left: auto; /* Center horizontally */
+    margin-right: auto; /* Center horizontally */
+    width: fit-content; /* Width will be determined by the content */
+}
+
+.proceed-button:hover {
+    background-color: #000000;
+}
+
+.proceed-button:disabled {
+    background-color: #ddd; /* Disabled button background color */
+    color: #999; /* Disabled button text color */
+    cursor: not-allowed; /* Disabled cursor */
 }

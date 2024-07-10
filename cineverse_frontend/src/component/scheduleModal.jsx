@@ -78,7 +78,7 @@ const ScheduleModal = ({ show, handleClose, schedule }) => {
                     onClick={handleProceedToSeats}
                     disabled={!selectedDate || !selectedTime}
                 >
-                    Proceed to Seat Selection
+                    Continue
                 </button>
             </div>
         </div>
