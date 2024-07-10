@@ -48,7 +48,7 @@ const Main = ({
       <ToastContainer />
       <Routes>
         <Route path="/" element={<Homepage />} />
-        <Route path="/seat-selection" element={<SeatSelection />} />
+        <Route path="/seat-selection/:scheduleId" element={<SeatSelection />} />
         <Route path="/movie/:id" element={<Movie />} />
         <Route element={<AdminRoutes />}>
           <Route path="/admin" element={<AdminDashboard />} />
