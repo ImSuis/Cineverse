@@ -1,20 +1,20 @@
 import React from 'react';
-import Seat from './seat';
 
-const SeatRow = ({ rowIndex, seats, onSeatClick }) => {
-    return (
-        <div className="seat-row">
-            {seats.map((seat, seatIndex) => (
-                <Seat
-                    key={`seat-${rowIndex}-${seatIndex}`}
-                    isSelected={seat.isSelected}
-                    isBooked={seat.isBooked}
-                    type={seat.type}
-                    onClick={() => onSeatClick(rowIndex, seatIndex)}
-                />
-            ))}
+const SeatRow = ({ seats }) => {
+  if (!seats) {
+    // If seats is undefined or null, render nothing or a fallback UI
+    return <div>No seats available</div>;
+  }
+
+  return (
+    <div className="seat-row">
+      {seats.map((seat, index) => (
+        <div key={index} className="seat">
+          {seat.label}
         </div>
-    );
+      ))}
+    </div>
+  );
 };
 
 export default SeatRow;

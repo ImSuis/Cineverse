@@ -1,94 +1,83 @@
-import React, { useState } from 'react';
-import '../style/seatSelection.css';
-import SeatRow from './seatRow';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
+import '../style/seatSelection.css'; // Adjust the import path for your CSS file
 
 const SeatSelection = () => {
+    const { scheduleId } = useParams(); // Using useParams hook
+
+    const [seats, setSeats] = useState([]);
     const numRows = 10;
-    const numCols = 12;
+    const numColumns = 12;
 
-    const rowLabels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').slice(0, numRows);
-    const colLabels = Array.from({ length: numCols }, (_, i) => i + 1);
-
-    const initialSeats = Array.from({ length: numRows }, () =>
-        Array(numCols).fill(null).map(() => ({
-            isSelected: false,
-            isBooked: Math.random() > 0.7,
-            type: 'standard',
-        }))
-    );
-
-    const [seats, setSeats] = useState(initialSeats);
-    const [selectedSeats, setSelectedSeats] = useState([]);
-
-    const handleSeatClick = (rowIndex, seatIndex) => {
-        const updatedSeats = seats.map((row, rIdx) =>
-            row.map((seat, sIdx) => {
-                if (rIdx === rowIndex && sIdx === seatIndex) {
-                    if (seat.isBooked) return seat;
-                    return { ...seat, isSelected: !seat.isSelected };
+    useEffect(() => {
+        const fetchSeats = async () => {
+            try {
+                const response = await axios.get(`http://localhost:5001/api/seats/booking/${scheduleId}`);
+                if (Array.isArray(response.data)) {
+                    setSeats(response.data);
+                } else {
+                    setSeats([]); // Ensure seats is an array even if the response is unexpected
                 }
-                return seat;
-            })
-        );
-        setSeats(updatedSeats);
+            } catch (error) {
+                console.error('Error fetching seats:', error);
+                setSeats([]); // Ensure seats is an array even if there's an error
+            }
+        };
 
-        const selected = updatedSeats[rowIndex][seatIndex].isSelected;
-        if (selected) {
-            setSelectedSeats([...selectedSeats, { row: rowIndex, col: seatIndex }]);
-        } else {
-            setSelectedSeats(selectedSeats.filter(seat => seat.row !== rowIndex || seat.col !== seatIndex));
+        fetchSeats();
+    }, [scheduleId]);
+
+    const renderSeats = () => {
+        let seatRows = [];
+        for (let row = 1; row <= numRows; row++) {
+            let seatColumns = [];
+            for (let column = 1; column <= numColumns; column++) {
+                const seat = seats.find(seat => seat.row === String.fromCharCode(64 + row) && seat.column === column);
+                const isBooked = seat && seat.isBooked;
+
+                seatColumns.push(
+                    <div key={column} className={`seat ${isBooked ? 'booked' : 'available'}`}>
+                    </div>
+                );
+            }
+            seatRows.push(
+                <div key={row} className="seat-row">
+                    <div className="label">{String.fromCharCode(64 + row)}</div>
+                    {seatColumns}
+                </div>
+            );
         }
+        return seatRows;
     };
 
-    const getTotalPrice = () => {
-        return selectedSeats.length * 10; // Assume each seat costs $10
+    const renderColumnLabels = () => {
+        let columnLabels = [];
+        for (let column = 1; column <= numColumns; column++) {
+            columnLabels.push(
+                <div key={column} className="label">
+                    {column}
+                </div>
+            );
+        }
+        return columnLabels;
     };
 
     return (
         <div className="seat-selection-container">
             <div className="seat-selection">
-                <div className="screen">SCREEN</div>
+                <div className="screen">Screen</div>
                 <div className="seat-rows-container">
                     <div className="column-labels">
-                        <div className="label"></div> {/* Empty top-left corner */}
-                        {colLabels.map((label, index) => (
-                            <div key={index} className="label">{label}</div>
-                        ))}
+                        <div className="label"></div> {/* Empty label for alignment */}
+                        {renderColumnLabels()}
                     </div>
-                    {seats.map((row, rowIndex) => (
-                        <div key={`row-${rowIndex}`} className="seat-row">
-                            <div className="label">{rowLabels[rowIndex]}</div>
-                            <SeatRow
-                                rowIndex={rowIndex}
-                                seats={row}
-                                onSeatClick={handleSeatClick}
-                            />
-                        </div>
-                    ))}
+                    {renderSeats()}
                 </div>
             </div>
-            <div className="booking-info" style={{ minHeight: selectedSeats.length ? 'auto' : '200px' }}>
+            <div className="booking-info">
                 <h2>Booking Information</h2>
-                {selectedSeats.length === 0 ? (
-                    <div className="empty-message">Please select a seat</div>
-                ) : (
-                    <>
-                        {selectedSeats.map((seat, index) => (
-                            <div key={index} className="item">
-                                <span>{`Seat: ${rowLabels[seat.row]}${colLabels[seat.col]}`}</span>
-                                <span className="price">$10.00</span>
-                            </div>
-                        ))}
-                        <div className="total">
-                            <span>Total</span>
-                            <span>${getTotalPrice()}</span>
-                        </div>
-                        <div className="discount-code">
-                            <input type="text" placeholder="Enter Discount Code" />
-                        </div>
-                        <button>Proceed to checkout</button>
-                    </>
-                )}
+                {/* Add your booking information display logic here */}
             </div>
         </div>
     );
