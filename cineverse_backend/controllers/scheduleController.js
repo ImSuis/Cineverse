@@ -57,19 +57,19 @@ exports.getAllSchedulesByMovie = async (req, res) => {
       if (!acc[date]) {
         acc[date] = [];
       }
-      
+
       // Check if the location already exists for this date
       const existingLocation = acc[date].find(item => item.location === schedule.Location.name);
       if (!existingLocation) {
         acc[date].push({
           location: schedule.Location.name,
-          times: [schedule.Showtime.time], // Store times as an array
+          times: [{ time: schedule.Showtime.time, scheduleId: schedule.id }], // Store times as an array of objects
         });
       } else {
         // Add time to existing location
-        existingLocation.times.push(schedule.Showtime.time);
+        existingLocation.times.push({ time: schedule.Showtime.time, scheduleId: schedule.id });
       }
-      
+
       return acc;
     }, {});
 
@@ -79,6 +79,8 @@ exports.getAllSchedulesByMovie = async (req, res) => {
     res.status(500).json({ message: "Error fetching schedules", error });
   }
 };
+
+
 
 // Get schedule by ID
 // exports.getScheduleById = async (req, res) => {
