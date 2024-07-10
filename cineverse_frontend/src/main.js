@@ -18,6 +18,7 @@ import AdminRoutes from "./protected/adminRoutes";
 import ManageShowtimes from "./pages/admin/manageShowtimes";
 import AddShowtime from "./pages/admin/addShowtimes";
 import ManageSchedules from "./pages/admin/manageSchedule";
+import AddSchedule from "./pages/admin/addSchedule";
 
 const Main = ({
   showLoginModal,
@@ -58,6 +59,7 @@ const Main = ({
           <Route path="/admin/showtimes" element={<ManageShowtimes />} />
           <Route path="/admin/showtimes/add" element={<AddShowtime />} />
           <Route path="/admin/schedules" element={<ManageSchedules />} />
+          <Route path="/admin/schedules/add" element={<AddSchedule />} />
           {/* <Route path="/admin/edit/:id" element={<AdminEdit />} /> */}
         </Route>
       </Routes>
