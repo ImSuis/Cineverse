@@ -10,10 +10,10 @@ import ScheduleModal from '../component/scheduleModal'; // Import the ScheduleMo
 const Movie = () => {
     const { id } = useParams();
     const [movie, setMovie] = useState(null);
-    const [showModal, setShowModal] = useState(false); // State to control modal visibility
+    const [showScheduleModal, setShowScheduleModal] = useState(false); // Renamed state to control schedule modal visibility
     const [schedule, setSchedule] = useState({ dates: [], schedules: {} }); // State to hold schedules
     const [videoId, setVideoId] = useState('');
-    const [show, setShow] = useState(false); // State to control YouTube video modal visibility
+    const [showYouTubeModal, setShowYouTubeModal] = useState(false); // State to control YouTube video modal visibility
 
     useEffect(() => {
         const fetchMovie = async () => {
@@ -34,17 +34,17 @@ const Movie = () => {
         return match ? match[1] : null;
     };
 
-    const handleShow = (url) => {
+    const handleShowYouTubeModal = (url) => {
         const id = extractVideoId(url);
         if (id) {
             setVideoId(id);
-            setShowModal(true);
+            setShowYouTubeModal(true);
         } else {
             console.error('Invalid YouTube URL');
         }
     };
 
-    const handleClose = () => setShowModal(false);
+    const handleCloseYouTubeModal = () => setShowYouTubeModal(false);
 
     // Function to check if release date is greater than current date
     const isReleased = () => {
@@ -68,7 +68,7 @@ const Movie = () => {
             const initialDate = dates.length > 0 ? dates[0] : null;
 
             setSchedule({ dates, schedules: groupedSchedules });
-            setShowModal(true);
+            setShowScheduleModal(true);
         } catch (error) {
             console.error('Error fetching schedules:', error.message);
         }
@@ -97,7 +97,7 @@ const Movie = () => {
                     <p><strong>Language:</strong> {movie.language}</p>
                     <p><strong>Rating:</strong> {movie.rating}</p>
                     <div className="buttons">
-                        <button onClick={() => handleShow(movie.trailerUrl)}>Watch Trailer</button>
+                        <button onClick={() => handleShowYouTubeModal(movie.trailerUrl)}>Watch Trailer</button>
                         {isReleased() && <button onClick={handleGetTicket}>Get Ticket</button>}
                     </div>
                 </div>
@@ -112,14 +112,14 @@ const Movie = () => {
 
             {/* Render the ScheduleModal component */}
             <ScheduleModal
-                show={showModal}
-                handleClose={handleClose}
+                show={showScheduleModal}
+                handleClose={() => setShowScheduleModal(false)}
                 schedule={schedule}
                 initialDate={schedule.dates.length > 0 ? schedule.dates[0] : null}
             />
 
             {/* Render the YouTube video modal */}
-            <Modal show={show} onHide={handleClose} centered dialogClassName="video-modal">
+            <Modal show={showYouTubeModal} onHide={handleCloseYouTubeModal} centered dialogClassName="video-modal">
                 <Modal.Body className="p-0">
                     <YouTube videoId={videoId} className="youtube-video" />
                 </Modal.Body>
