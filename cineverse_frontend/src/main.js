@@ -20,6 +20,7 @@ import AddShowtime from "./pages/admin/addShowtimes";
 import ManageSchedules from "./pages/admin/manageSchedule";
 import AddSchedule from "./pages/admin/addSchedule";
 import Footer from "./component/footer";
+import Profile from "./pages/profile";
 
 const Main = ({
   showLoginModal,
@@ -51,6 +52,7 @@ const Main = ({
         <Route path="/" element={<Homepage />} />
         <Route path="/seat-selection/:scheduleId" element={<SeatSelection />} />
         <Route path="/movie/:id" element={<Movie />} />
+        <Route path="/profile" element={<Profile />} />
         <Route element={<AdminRoutes />}>
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/admin/movies" element={<ManageMovies />} />

@@ -33,6 +33,11 @@ const Navbar = ({ handleLoginModalShow, handleRegisterModalShow, isLoggedIn, use
         window.location.reload();
     };
 
+    const navigateToProfile = () => {
+        navigate('/profile');
+        setDropdownOpen(false);
+    };
+
     return (
         <div className="navbar-container">
             <Container>
@@ -61,13 +66,14 @@ const Navbar = ({ handleLoginModalShow, handleRegisterModalShow, isLoggedIn, use
                                     </div>
                                     {dropdownOpen && (
                                         <div className="dropdown-menu">
+                                            <button onClick={navigateToProfile}>Profile</button>
                                             <button onClick={handleLogout}>Logout</button>
                                         </div>
                                     )}
                                 </div>
                             ) : (
                                 <>
-                                    <button  className="login-link" onClick={handleLoginModalShow}>Login</button>
+                                    <button className="login-link" onClick={handleLoginModalShow}>Login</button>
                                     <button href="#register" className="register-link" onClick={handleRegisterModalShow}>Register</button>
                                 </>
                             )}
