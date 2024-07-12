@@ -80,7 +80,6 @@ const SeatSelection = () => {
             console.error('Error creating booking:', error);
             alert('Error creating booking.');
         }
-
     };
 
     const renderSeats = () => {
@@ -133,6 +132,20 @@ const SeatSelection = () => {
                         {renderColumnLabels()}
                     </div>
                     {renderSeats()}
+                </div>
+                <div className="legend">
+                    <div className="legend-item">
+                        <div className="legend-color available"></div>
+                        <span>Available Seat</span>
+                    </div>
+                    <div className="legend-item">
+                        <div className="legend-color selected"></div>
+                        <span>Selected Seat</span>
+                    </div>
+                    <div className="legend-item">
+                        <div className="legend-color booked"></div>
+                        <span>Booked Seat</span>
+                    </div>
                 </div>
             </div>
             <div className="booking-info">

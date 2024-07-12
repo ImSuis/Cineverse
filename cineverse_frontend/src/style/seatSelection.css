@@ -171,6 +171,36 @@
     margin-top: 0; /* Remove margin from column labels */
 }
 
+.legend {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    margin: 0 10px;
+    font-size: 0.9em;
+}
+
+.legend-color {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+}
+
+.legend-color.available {
+    background-color: #ccc;
+}
+
+.legend-color.selected {
+    background-color: rgb(74, 209, 34);
+}
+
+.legend-color.booked {
+    background-color: #c72121;
+}
 /* Media queries for responsiveness */
 @media (min-width: 768px) {
     .seat-selection-container {
