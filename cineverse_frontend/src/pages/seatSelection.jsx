@@ -1,14 +1,21 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
-import '../style/seatSelection.css'; // Adjust the import path for your CSS file
+import '../style/seatSelection.css';
+import Seat from './seat';
 
 const SeatSelection = () => {
-    const { scheduleId } = useParams(); // Using useParams hook
+    const { scheduleId } = useParams();
 
     const [seats, setSeats] = useState([]);
+    const [selectedSeats, setSelectedSeats] = useState([]);
+    const [bookingInfo, setBookingInfo] = useState({
+        totalPrice: 0,
+    });
+
     const numRows = 10;
     const numColumns = 12;
+    const seatPrice = 10; // Example seat price, adjust as needed
 
     useEffect(() => {
         const fetchSeats = async () => {
@@ -17,16 +24,64 @@ const SeatSelection = () => {
                 if (Array.isArray(response.data)) {
                     setSeats(response.data);
                 } else {
-                    setSeats([]); // Ensure seats is an array even if the response is unexpected
+                    setSeats([]);
                 }
             } catch (error) {
                 console.error('Error fetching seats:', error);
-                setSeats([]); // Ensure seats is an array even if there's an error
+                setSeats([]);
             }
         };
 
         fetchSeats();
     }, [scheduleId]);
+
+    const handleSeatClick = (row, column) => {
+        const seatLabel = String.fromCharCode(64 + row) + column;
+        const seatIndex = selectedSeats.indexOf(seatLabel);
+
+        if (seatIndex === -1) {
+            setSelectedSeats([...selectedSeats, seatLabel]);
+            setBookingInfo({ ...bookingInfo, totalPrice: bookingInfo.totalPrice + seatPrice });
+        } else {
+            const updatedSeats = [...selectedSeats];
+            updatedSeats.splice(seatIndex, 1);
+            setSelectedSeats(updatedSeats);
+            setBookingInfo({ ...bookingInfo, totalPrice: bookingInfo.totalPrice - seatPrice });
+        }
+    };
+
+    const handleBooking = async () => {
+        const seatIds = selectedSeats.map(seatLabel => {
+            const row = seatLabel.charCodeAt(0) - 65 + 1;
+            const column = parseInt(seatLabel.slice(1), 10);
+            const seat = seats.find(seat => seat.row === String.fromCharCode(64 + row) && seat.column === column);
+            return seat.id;
+        });
+
+        try {
+            const token = localStorage.getItem('token'); // Retrieve the token from localStorage
+
+            const response = await axios.post('http://localhost:5001/api/bookings/create', {
+                scheduleId,
+                seatIds,
+                totalPrice: bookingInfo.totalPrice,
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}` // Include the token in the Authorization header
+                }
+            });
+
+            if (response.status === 201) {
+                alert('Booking created successfully!');
+            } else {
+                alert('Error creating booking.');
+            }
+        } catch (error) {
+            console.error('Error creating booking:', error);
+            alert('Error creating booking.');
+        }
+
+    };
 
     const renderSeats = () => {
         let seatRows = [];
@@ -35,10 +90,15 @@ const SeatSelection = () => {
             for (let column = 1; column <= numColumns; column++) {
                 const seat = seats.find(seat => seat.row === String.fromCharCode(64 + row) && seat.column === column);
                 const isBooked = seat && seat.isBooked;
+                const isSelected = selectedSeats.includes(String.fromCharCode(64 + row) + column);
 
                 seatColumns.push(
-                    <div key={column} className={`seat ${isBooked ? 'booked' : 'available'}`}>
-                    </div>
+                    <Seat
+                        key={column}
+                        isBooked={isBooked}
+                        isSelected={isSelected}
+                        onClick={() => handleSeatClick(row, column)}
+                    />
                 );
             }
             seatRows.push(
@@ -69,7 +129,7 @@ const SeatSelection = () => {
                 <div className="screen">Screen</div>
                 <div className="seat-rows-container">
                     <div className="column-labels">
-                        <div className="label"></div> {/* Empty label for alignment */}
+                        <div className="label"></div>
                         {renderColumnLabels()}
                     </div>
                     {renderSeats()}
@@ -77,7 +137,11 @@ const SeatSelection = () => {
             </div>
             <div className="booking-info">
                 <h2>Booking Information</h2>
-                {/* Add your booking information display logic here */}
+                <div className="item">
+                    <span>Total Price:</span>
+                    <span className="price">${bookingInfo.totalPrice}</span>
+                </div>
+                <button onClick={handleBooking}>Confirm Booking</button>
             </div>
         </div>
     );

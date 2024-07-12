@@ -1,19 +1,14 @@
 import React from 'react';
-import Seat from './seat';
+import '../style/seat.css'; // Add appropriate styles
 
-const SeatRow = ({ rowIndex, seats, onSeatClick }) => {
+const Seat = ({ isBooked, isSelected, onClick }) => {
     return (
-        <div className="seat-row">
-            {seats.map((seat, seatIndex) => (
-                <Seat
-                    key={`seat-${seat.id}`}
-                    isSelected={seat.isSelected}
-                    isBooked={seat.isBooked}
-                    onClick={() => onSeatClick(rowIndex, seatIndex)}
-                />
-            ))}
+        <div
+            className={`seat ${isBooked ? 'booked' : ''} ${isSelected ? 'selected' : ''}`}
+            onClick={!isBooked ? onClick : null}
+        >
         </div>
     );
 };
 
-export default SeatRow;
+export default Seat;

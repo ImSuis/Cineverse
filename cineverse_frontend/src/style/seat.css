@@ -1,0 +1,20 @@
+/* seat.css */
+
+.seat {
+    width: 32px;
+    height: 32px;
+    margin: 5px;
+    background-color: #ccc;
+    border: 1px solid #999;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.seat.selected {
+    background-color: #6c7ae0;
+}
+
+.seat.booked {
+    background-color: #e06c6c;
+    cursor: not-allowed;
+}
