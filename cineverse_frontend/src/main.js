@@ -74,7 +74,7 @@ const Main = ({
         show={showRegisterModal}
         handleClose={handleRegisterModalClose}
       />
-                  <Footer />
+      {!isAdminRoute && <Footer />}
 
     </>
   );
