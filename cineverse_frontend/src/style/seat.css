@@ -11,10 +11,10 @@
 }
 
 .seat.selected {
-    background-color: #6c7ae0;
+    background-color: rgb(74, 209, 34);
 }
 
 .seat.booked {
-    background-color: #e06c6c;
+    background-color: #c72121;
     cursor: not-allowed;
 }

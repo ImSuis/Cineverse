@@ -118,7 +118,7 @@
 .booking-info button {
     width: 100%;
     padding: 15px;
-    background-color: #8BC34A;
+    background-color: orange;
     color: white;
     border: none;
     cursor: pointer;
@@ -127,7 +127,7 @@
 }
 
 .booking-info button:hover {
-    background-color: #7cb342;
+    background-color: #f28227;
 }
 
 .booking-info .empty-message {

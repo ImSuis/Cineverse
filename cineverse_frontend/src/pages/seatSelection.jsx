@@ -15,7 +15,7 @@ const SeatSelection = () => {
 
     const numRows = 10;
     const numColumns = 12;
-    const seatPrice = 10; // Example seat price, adjust as needed
+    const seatPrice = 310; // Example seat price, adjust as needed
 
     useEffect(() => {
         const fetchSeats = async () => {
@@ -37,10 +37,10 @@ const SeatSelection = () => {
 
     const handleSeatClick = (row, column) => {
         const seatLabel = String.fromCharCode(64 + row) + column;
-        const seatIndex = selectedSeats.indexOf(seatLabel);
+        const seatIndex = selectedSeats.findIndex(seat => seat.label === seatLabel);
 
         if (seatIndex === -1) {
-            setSelectedSeats([...selectedSeats, seatLabel]);
+            setSelectedSeats([...selectedSeats, { label: seatLabel, price: seatPrice }]);
             setBookingInfo({ ...bookingInfo, totalPrice: bookingInfo.totalPrice + seatPrice });
         } else {
             const updatedSeats = [...selectedSeats];
@@ -51,11 +51,11 @@ const SeatSelection = () => {
     };
 
     const handleBooking = async () => {
-        const seatIds = selectedSeats.map(seatLabel => {
-            const row = seatLabel.charCodeAt(0) - 65 + 1;
-            const column = parseInt(seatLabel.slice(1), 10);
-            const seat = seats.find(seat => seat.row === String.fromCharCode(64 + row) && seat.column === column);
-            return seat.id;
+        const seatIds = selectedSeats.map(seat => {
+            const row = seat.label.charCodeAt(0) - 65 + 1;
+            const column = parseInt(seat.label.slice(1), 10);
+            const seatObj = seats.find(seat => seat.row === String.fromCharCode(64 + row) && seat.column === column);
+            return seatObj.id;
         });
 
         try {
@@ -90,7 +90,7 @@ const SeatSelection = () => {
             for (let column = 1; column <= numColumns; column++) {
                 const seat = seats.find(seat => seat.row === String.fromCharCode(64 + row) && seat.column === column);
                 const isBooked = seat && seat.isBooked;
-                const isSelected = selectedSeats.includes(String.fromCharCode(64 + row) + column);
+                const isSelected = selectedSeats.some(selectedSeat => selectedSeat.label === String.fromCharCode(64 + row) + column);
 
                 seatColumns.push(
                     <Seat
@@ -137,9 +137,19 @@ const SeatSelection = () => {
             </div>
             <div className="booking-info">
                 <h2>Booking Information</h2>
-                <div className="item">
+                {selectedSeats.length === 0 ? (
+                    <div className="empty-message">No seats selected</div>
+                ) : (
+                    selectedSeats.map(seat => (
+                        <div key={seat.label} className="item">
+                            <span>Seat {seat.label}</span>
+                            <span className="price">Rs. {seat.price}</span>
+                        </div>
+                    ))
+                )}
+                <div className="total">
                     <span>Total Price:</span>
-                    <span className="price">${bookingInfo.totalPrice}</span>
+                    <span className="price">Rs. {bookingInfo.totalPrice}</span>
                 </div>
                 <button onClick={handleBooking}>Confirm Booking</button>
             </div>
