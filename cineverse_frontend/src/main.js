@@ -19,6 +19,7 @@ import ManageShowtimes from "./pages/admin/manageShowtimes";
 import AddShowtime from "./pages/admin/addShowtimes";
 import ManageSchedules from "./pages/admin/manageSchedule";
 import AddSchedule from "./pages/admin/addSchedule";
+import Footer from "./component/footer";
 
 const Main = ({
   showLoginModal,
@@ -73,6 +74,8 @@ const Main = ({
         show={showRegisterModal}
         handleClose={handleRegisterModalClose}
       />
+                  <Footer />
+
     </>
   );
 };

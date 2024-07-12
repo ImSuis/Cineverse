@@ -5,6 +5,7 @@ import ComingSoon from '../component/comingSoon';
 import NowShowing from '../component/nowShowing';
 import '../style/homepage.css';
 import ScheduleModal from '../component/scheduleModal'; // Import the ScheduleModal component
+import Footer from '../component/footer';
 
 const Homepage = () => {
     const [nowShowingMovies, setNowShowingMovies] = useState([]);
