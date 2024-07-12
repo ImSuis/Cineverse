@@ -4,8 +4,7 @@ const Seat = require('./seatModel');
 const Movie = require('./movieModel');
 const Location = require('./locationModel');
 const Showtime = require('./showtimeModel');
-const ScheduleSeat = require('./scheduleSeatModel'); // Correct import path for ScheduleSeat
-
+const ScheduleSeat = require('./scheduleSeatModel');
 
 // Schedule and Movie
 Movie.hasMany(Schedule);
@@ -23,4 +22,12 @@ Schedule.belongsTo(Showtime);
 Schedule.belongsToMany(Seat, { through: ScheduleSeat });
 Seat.belongsToMany(Schedule, { through: ScheduleSeat });
 
-
+module.exports = {
+  User,
+  Schedule,
+  Seat,
+  Movie,
+  Location,
+  Showtime,
+  ScheduleSeat,
+};

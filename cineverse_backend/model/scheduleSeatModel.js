@@ -23,7 +23,13 @@ ScheduleSeat.init(
   {
     sequelize,
     modelName: 'ScheduleSeat',
-    tableName: 'ScheduleSeats', // Optional: specify the table name explicitly
+    tableName: 'ScheduleSeats',
+    indexes: [
+      {
+        unique: true,
+        fields: ['ScheduleId', 'SeatId'],
+      },
+    ],
   }
 );
 

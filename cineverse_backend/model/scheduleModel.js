@@ -1,6 +1,6 @@
 const { DataTypes, Model } = require('sequelize');
 const sequelize = require('../database/db');
-const Seat = require('./seatModel'); // Correct import path
+const Seat = require('./seatModel');
 
 class Schedule extends Model {}
 
@@ -17,6 +17,7 @@ Schedule.init(
   }
 );
 
-Schedule.belongsToMany(Seat, { through: 'ScheduleSeat' }); // Adjust according to your setup
+Schedule.belongsToMany(Seat, { through: 'ScheduleSeat' });
+Seat.belongsToMany(Schedule, { through: 'ScheduleSeat' });
 
 module.exports = Schedule;

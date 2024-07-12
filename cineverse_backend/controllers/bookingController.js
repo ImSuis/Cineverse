@@ -21,15 +21,8 @@ exports.createBooking = async (req, res) => {
     console.log("Total Price:", totalPrice);
 
     // Validate scheduleId and seatIds
-    if (
-      !scheduleId ||
-      !seatIds ||
-      !Array.isArray(seatIds) ||
-      seatIds.length === 0
-    ) {
-      return res
-        .status(400)
-        .json({ message: "Invalid or missing schedule ID or seat IDs" });
+    if (!scheduleId || !seatIds || !Array.isArray(seatIds) || seatIds.length === 0) {
+      return res.status(400).json({ message: "Invalid or missing schedule ID or seat IDs" });
     }
 
     // Check seat availability for the schedule
@@ -93,6 +86,8 @@ exports.createBooking = async (req, res) => {
     res.status(500).json({ message: "Error creating booking", error });
   }
 };
+
+
 
 exports.getBookingsByUserId = async (req, res) => {
   try {
