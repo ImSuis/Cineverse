@@ -66,5 +66,25 @@ const getUserDetails = async (req, res) => {
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
+const updateUser = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { name, phone } = req.body;
+    const user = await User.findByPk(userId);
 
-module.exports = { registerUser, loginUser, getUserDetails };
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    user.name = name || user.name;
+    user.phone = phone || user.phone;
+
+    await user.save();
+
+    res.status(200).json({ message: 'User updated successfully', user });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+module.exports = { registerUser, loginUser, getUserDetails, updateUser };

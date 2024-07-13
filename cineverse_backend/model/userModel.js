@@ -23,6 +23,11 @@ User.init(
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
+    phone: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    
   },
   {
     sequelize,
