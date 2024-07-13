@@ -10,7 +10,9 @@ const Footer = () => {
                 <Link to="/" className="logo-text-link">
                     <span className="logo-text">Cine<span className="logo-verse">verse</span></span>
                 </Link>
-                <span className="faq">FAQs</span>
+                <Link to="/faq">
+                    <span className="faq">FAQs</span>
+                </Link>
             </div>
             <div className="social-col">
                 <span className="follow-text">Follow us on</span>

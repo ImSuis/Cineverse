@@ -21,6 +21,7 @@ import ManageSchedules from "./pages/admin/manageSchedule";
 import AddSchedule from "./pages/admin/addSchedule";
 import Footer from "./component/footer";
 import Profile from "./pages/profile";
+import FAQ from "./pages/faq";
 
 const Main = ({
   showLoginModal,
@@ -63,7 +64,7 @@ const Main = ({
           <Route path="/admin/showtimes/add" element={<AddShowtime />} />
           <Route path="/admin/schedules" element={<ManageSchedules />} />
           <Route path="/admin/schedules/add" element={<AddSchedule />} />
-          {/* <Route path="/admin/edit/:id" element={<AdminEdit />} /> */}
+          <Route path="/faq" element={<FAQ />} />
         </Route>
       </Routes>
       <LoginModal
