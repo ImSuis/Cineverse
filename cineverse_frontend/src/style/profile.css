@@ -1,77 +1,82 @@
 .profile-container {
-    display: flex;
-    margin: 100px;
-    margin-top: 180px;
-  }
-  
-  .profile-sidebar {
-    display: flex;
-    flex-direction: column;
-    margin-right: 20px;
-  }
-  
-  .profile-sidebar-button {
-    padding: 10px 20px;
-    border: none;
-    background-color: #f0f0f0;
-    cursor: pointer;
-    margin-bottom: 10px;
-    font-size: 16px;
-    text-align: center;
-    width: 250px;
-  }
-  
-  .profile-sidebar-button.active {
-    background-color: #ff9933;
-    color: white;
-  }
-  
-  .profile-content {
-    flex-grow: 1;
-    background-color: #ffffff;
-    padding: 20px;
-    border: 1px solid #e0e0e0;
-    border-radius: 5px;
-    margin-left: 90px;
-  }
-  
-  .profile-form .profile-form-group {
-    margin-bottom: 20px;
-  }
-  
-  .profile-form label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-  }
-  
-  .profile-form input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  .profile-form-buttons {
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  .profile-btn {
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-    border-radius: 5px;
-  }
-  
-  .profile-change-password {
-    background-color: #ff9933;
-    color: white;
-  }
-  
-  .profile-save-changes {
-    background-color: #ff9933;
-    color: white;
-  }
-  
+  display: flex;
+  margin: 100px;
+  margin-top: 180px;
+}
+
+.profile-sidebar {
+  display: flex;
+  flex-direction: column;
+  margin-right: 20px;
+}
+
+.profile-sidebar-button {
+  padding: 10px 20px;
+  border: none;
+  background-color: #f0f0f0;
+  cursor: pointer;
+  margin-bottom: 10px;
+  font-size: 16px;
+  text-align: center;
+  width: 250px;
+}
+
+.profile-sidebar-button.active {
+  background-color: #ff9933;
+  color: white;
+}
+
+.profile-content {
+  flex-grow: 1;
+  background-color: #ffffff;
+  padding: 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  margin-left: 90px;
+}
+
+.profile-form .profile-form-group {
+  margin-bottom: 20px;
+}
+
+.profile-form label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.profile-form input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.profile-form-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.profile-btn {
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 5px;
+}
+
+.profile-change-password {
+  background-color: #ff9933;
+  color: white;
+}
+
+.profile-save-changes {
+  background-color: #ff9933;
+  color: white;
+}
+
+.table td,
+.table th {
+  vertical-align: middle;
+  text-align: center;
+}
