@@ -54,7 +54,7 @@ const getUserDetails = async (req, res) => {
   try {
     const userId = req.user.id;
     const user = await User.findByPk(userId, {
-      attributes: ['id', 'name', 'email'] // Select fields to include in the response
+      attributes: ['id', 'name', 'email', 'phone'] // Select fields to include in the response
     });
 
     if (!user) {

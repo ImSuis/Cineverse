@@ -1,18 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import '../style/profile.css';
 import axios from 'axios';
-import { Table } from 'react-bootstrap';
 import QRCode from 'qrcode.react';
+import React, { useEffect, useState } from 'react';
+import { Table } from 'react-bootstrap';
+import '../style/profile.css';
+import {toast} from 'react-toastify';
 
 function Profile() {
   const [user, setUser] = useState({
     name: '',
     email: '',
-    mobile: ''
+    phone: ''
   });
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
   const [activeTab, setActiveTab] = useState('account');
 
   useEffect(() => {
@@ -27,7 +29,7 @@ function Profile() {
         setUser({
           name: response.data.user.name,
           email: response.data.user.email,
-          mobile: '' // Assuming you don't have this in the response
+          phone: response.data.user.phone
         });
       } catch (err) {
         setError(err.response ? err.response.data.message : 'Error fetching user details');
@@ -66,9 +68,25 @@ function Profile() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission (e.g., save changes)
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.put('http://localhost:5001/api/users/update', {
+        name: user.name,
+        phone: user.phone
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      toast.success(response.data.message);
+      setError('');
+    } catch (err) {
+      const errorMessage = err.response ? err.response.data.message : 'Error updating user details';
+      toast.error(errorMessage);
+      setError(errorMessage);
+    }
   };
 
   const groupedBookings = bookings.reduce((acc, booking) => {
@@ -110,6 +128,7 @@ function Profile() {
       </div>
       <div className="profile-content">
         {error && <div className="error-message">{error}</div>}
+        {successMessage && <div className="success-message">{successMessage}</div>}
         {activeTab === 'account' ? (
           <form className="profile-form" onSubmit={handleSubmit}>
             <div className="profile-form-group">
@@ -127,15 +146,15 @@ function Profile() {
                 type="email"
                 name="email"
                 value={user.email}
-                onChange={handleChange}
+                readOnly
               />
             </div>
             <div className="profile-form-group">
               <label>Mobile Number</label>
               <input
                 type="text"
-                name="mobile"
-                value={user.mobile}
+                name="phone"
+                value={user.phone}
                 onChange={handleChange}
               />
             </div>
