@@ -87,6 +87,7 @@ const updateUser = async (req, res) => {
   }
 };
 
+// controllers/userController.js
 const changePassword = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -99,7 +100,7 @@ const changePassword = async (req, res) => {
 
     const isMatch = await bcrypt.compare(currentPassword, user.password);
     if (!isMatch) {
-      return res.status(401).json({ message: 'Current password is incorrect' });
+      return res.status(401).json({ message: 'Current password is incorrect' }); // Updated error message
     }
 
     const hashedNewPassword = await bcrypt.hash(newPassword, 10);
@@ -112,5 +113,6 @@ const changePassword = async (req, res) => {
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
+
 
 module.exports = { registerUser, loginUser, getUserDetails, updateUser, changePassword };

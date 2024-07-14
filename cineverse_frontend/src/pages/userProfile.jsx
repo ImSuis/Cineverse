@@ -1,6 +1,8 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import { Button, Modal, Form } from 'react-bootstrap';
+import ChangePasswordModal from './changePasswordModal'; // Import ChangePasswordModal component
 import '../style/profile.css';
 
 function UserProfile({ user, setUser }) {
@@ -10,6 +12,7 @@ function UserProfile({ user, setUser }) {
     phone: ''
   });
   const [error, setError] = useState('');
+  const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
 
   useEffect(() => {
     const fetchUserDetails = async () => {
@@ -67,6 +70,14 @@ function UserProfile({ user, setUser }) {
     }
   };
 
+  const handleShowChangePasswordModal = () => {
+    setShowChangePasswordModal(true);
+  };
+
+  const handleCloseChangePasswordModal = () => {
+    setShowChangePasswordModal(false);
+  };
+
   return (
     <div>
       {error && <div className="error-message">{error}</div>}
@@ -99,10 +110,16 @@ function UserProfile({ user, setUser }) {
           />
         </div>
         <div className="profile-form-buttons">
-          <button type="button" className="profile-btn profile-change-password">Change Password</button>
+          <button type="button" className="profile-btn profile-change-password" onClick={handleShowChangePasswordModal}>Change Password</button>
           <button type="submit" className="profile-btn profile-save-changes">Save Changes</button>
         </div>
       </form>
+
+      {/* Change Password Modal */}
+      <ChangePasswordModal
+        show={showChangePasswordModal}
+        handleClose={handleCloseChangePasswordModal}
+      />
     </div>
   );
 }
