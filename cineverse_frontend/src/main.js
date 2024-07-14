@@ -21,20 +21,16 @@ import AddSchedule from "./pages/admin/addSchedule";
 import Footer from "./component/footer";
 import Profile from "./pages/profile";
 import FAQ from "./pages/faq";
+import AuthModalManager from "./pages/authModalManger";
 
-const Main = ({
-  showLoginModal,
-  handleLoginModalShow,
-  handleLoginModalClose,
-  showRegisterModal,
-  handleRegisterModalShow,
-  handleRegisterModalClose,
-}) => {
+const Main = () => {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith("/admin");
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showRegisterModal, setShowRegisterModal] = useState(false);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -56,6 +52,11 @@ const Main = ({
 
     fetchUser();
   }, []);
+
+  const handleLoginModalShow = () => setShowLoginModal(true);
+  const handleLoginModalClose = () => setShowLoginModal(false);
+  const handleRegisterModalShow = () => setShowRegisterModal(true);
+  const handleRegisterModalClose = () => setShowRegisterModal(false);
 
   return (
     <>
@@ -86,7 +87,7 @@ const Main = ({
           <Route path="/admin/schedules/add" element={<AddSchedule />} />
         </Route>
       </Routes>
-      <LoginModal
+      <AuthModalManager
         show={showLoginModal}
         handleClose={handleLoginModalClose}
         setIsLoggedIn={setIsLoggedIn}
