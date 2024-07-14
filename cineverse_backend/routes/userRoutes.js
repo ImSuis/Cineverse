@@ -1,6 +1,6 @@
 // routes/userRoutes.js
 const express = require('express');
-const { registerUser, loginUser, getUserDetails, updateUser, changePassword } = require('../controllers/userController');
+const { registerUser, loginUser, getUserDetails, updateUser, changePassword, sendCodeToEmail, requestCode, verifyCodeAndChangePassword } = require('../controllers/userController');
 const { authGuard, authGuardAdmin } = require('../middleware/authGuard');
 
 const router = express.Router();
@@ -9,6 +9,12 @@ router.post('/register', registerUser);
 router.post('/login', loginUser);
 router.put('/update', authGuard, updateUser);
 router.put('/change-password', authGuard, changePassword);
+router.post('/send-code', sendCodeToEmail);
+router.post("/request-code", requestCode);
+
+router.post(
+  "/verify-code-and-change-password", verifyCodeAndChangePassword
+); 
 
 // Example of a protected route for admin users
 router.get('/admin', authGuardAdmin, (req, res) => {

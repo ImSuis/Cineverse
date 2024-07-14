@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../model/userModel'); // Correct import path
 require('dotenv').config();
+const nodemailer = require('nodemailer');
 
 const registerUser = async (req, res) => {
   try {
@@ -114,5 +115,108 @@ const changePassword = async (req, res) => {
   }
 };
 
+const generateRandomCode = () => {
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let code = "";
+  for (let i = 0; i < 6; i++) {
+    code += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+  return code;
+};
 
-module.exports = { registerUser, loginUser, getUserDetails, updateUser, changePassword };
+// Send code to user's email
+const sendCodeToEmail = async (email, code) => {
+  // Create a nodemailer transporter
+  let transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.EMAIL_USERNAME,
+      pass: process.env.EMAIL_PASSWORD,
+    },
+  });
+
+  // Construct email message
+  let mailOptions = {
+    from: process.env.EMAIL_USERNAME,
+    to: email,
+    subject: "Password Reset Code",
+    text: `Your verification code is: ${code}`,
+  };
+
+  // Send email
+  await transporter.sendMail(mailOptions);
+};
+
+const requestCode = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const user = await User.findOne({ where: { email } });
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found.",
+      });
+    }
+
+    const code = generateRandomCode();
+    user.resetCode = code;
+    await user.save();
+
+    await sendCodeToEmail(email, code);
+
+    res.status(200).json({
+      success: true,
+      message: "Verification code sent to your email.",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
+
+const verifyCodeAndChangePassword = async (req, res) => {
+  const { email, code, newPassword } = req.body;
+
+  try {
+    const user = await User.findOne({ where: { email } });
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found.",
+      });
+    }
+
+    if (code !== user.resetCode) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid verification code.",
+      });
+    }
+
+    const randomSalt = await bcrypt.genSalt(10);
+    const encryptedPassword = await bcrypt.hash(newPassword, randomSalt);
+
+    user.password = encryptedPassword;
+    user.resetCode = null;
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Password changed successfully.",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
+
+
+module.exports = { registerUser, loginUser, getUserDetails, updateUser, changePassword, generateRandomCode, sendCodeToEmail, requestCode, verifyCodeAndChangePassword };

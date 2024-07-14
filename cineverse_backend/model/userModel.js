@@ -27,7 +27,14 @@ User.init(
       type: DataTypes.STRING,
       allowNull: true,
     },
-    
+    resetCode: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    resetCodeExpiry: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
   },
   {
     sequelize,
