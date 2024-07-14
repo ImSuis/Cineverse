@@ -96,6 +96,7 @@ const Movie = () => {
                     <p><strong>Genre:</strong> {movie.genre}</p>
                     <p><strong>Language:</strong> {movie.language}</p>
                     <p><strong>Rating:</strong> {movie.rating}</p>
+                    <p><strong>Release Date:</strong> {new Date(movie.releaseDate).toLocaleDateString()}</p>
                     <div className="buttons">
                         <button onClick={() => handleShowYouTubeModal(movie.trailerUrl)}>Watch Trailer</button>
                         {isReleased() && <button onClick={handleGetTicket}>Get Ticket</button>}

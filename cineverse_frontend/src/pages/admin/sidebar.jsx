@@ -1,7 +1,7 @@
 // src/components/Sidebar.js
 
 import React from 'react';
-import { FaFilm, FaTachometerAlt, FaTicketAlt, FaUsers } from 'react-icons/fa'; // Example icons
+import { FaFilm, FaTachometerAlt, FaTicketAlt, FaLocationArrow } from 'react-icons/fa'; // Example icons
 import { Link } from 'react-router-dom';
 import '../admin/style/sidebar.css';
 
@@ -27,12 +27,7 @@ const Sidebar = () => {
                             Dashboard
                         </Link>
                     </li>
-                    <li>
-                        <Link to="/admin/users">
-                            <FaUsers className="sidebar-icon" />
-                            Manage Users
-                        </Link>
-                    </li>
+                    
                     <li>
                         <Link to="/admin/movies">
                             <FaFilm className="sidebar-icon" />
@@ -41,7 +36,7 @@ const Sidebar = () => {
                     </li>
                     <li>
                         <Link to="/admin/locations">
-                            <FaTicketAlt className="sidebar-icon" />
+                            <FaLocationArrow className="sidebar-icon" />
                             Manage Locations
                         </Link>
                     </li>

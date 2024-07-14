@@ -7,12 +7,16 @@ const ScheduleModal = ({ show, handleClose, schedule }) => {
     const [selectedTime, setSelectedTime] = useState(null);
     const navigate = useNavigate();
 
+    // Filter dates to include only those from the current date onward
+    const today = new Date().setHours(0, 0, 0, 0);
+    const filteredDates = schedule.dates.filter(date => new Date(date).setHours(0, 0, 0, 0) >= today);
+
     // Effect to set the initial selected date when modal opens
     useEffect(() => {
-        if (schedule.dates.length > 0) {
-            setSelectedDate(schedule.dates[0]); // Select the first date by default
+        if (filteredDates.length > 0) {
+            setSelectedDate(filteredDates[0]); // Select the first valid date by default
         }
-    }, [schedule]);
+    }, [filteredDates]);
 
     const handleDateClick = (date) => {
         setSelectedDate(date);
@@ -43,7 +47,7 @@ const ScheduleModal = ({ show, handleClose, schedule }) => {
             <div className="unique-modal-content" onClick={(e) => e.stopPropagation()}>
                 <button className="unique-modal-close" onClick={handleClose}>&times;</button>
                 <div className="unique-modal-buttons">
-                    {schedule.dates.map((date, index) => (
+                    {filteredDates.map((date, index) => (
                         <button
                             key={index}
                             className={`unique-modal-button ${selectedDate === date ? 'active' : ''}`}
