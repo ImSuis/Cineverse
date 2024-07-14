@@ -1,59 +1,66 @@
 import React, { useState } from 'react';
 import { Button, Form, Modal, CloseButton } from 'react-bootstrap';
 import { toast } from 'react-toastify';
+import axios from 'axios';
 import '../style/loginModal.css'; // Import the CSS file
 
 const ForgetPasswordModal = ({ show, handleClose }) => {
     const [step, setStep] = useState(1);
     const [email, setEmail] = useState('');
-    const [code, setCode] = useState('');
+    const [code, setCode] = useState(Array(6).fill(''));
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
 
-    const handleEmailSubmit = () => {
-        // Send request to backend to send code to email
-        // Example API call
-        // sendCodeToEmail(email)
-        //     .then(response => {
-        //         toast.success('Verification code sent to your email.');
-        //         setStep(2);
-        //     })
-        //     .catch(error => {
-        //         toast.error('Failed to send verification code.');
-        //     });
-        setStep(2); // For demonstration purposes
+    const handleEmailSubmit = async () => {
+        try {
+            const response = await axios.post('http://localhost:5001/api/users/request-code', { email });
+            toast.success(response.data.message);
+            setStep(2);
+        } catch (error) {
+            toast.error(error.response.data.message);
+        }
     };
 
-    const handleCodeSubmit = () => {
-        // Verify code
-        // Example API call
-        // verifyCode(email, code)
-        //     .then(response => {
-        //         toast.success('Code verified.');
-        //         setStep(3);
-        //     })
-        //     .catch(error => {
-        //         toast.error('Invalid verification code.');
-        //     });
-        setStep(3); // For demonstration purposes
+    const handleCodeSubmit = async () => {
+        try {
+            const response = await axios.post('http://localhost:5001/api/users/verify-code', { email, code: code.join('') });
+            toast.success(response.data.message);
+            setStep(3);
+        } catch (error) {
+            toast.error(error.response.data.message);
+        }
     };
 
-    const handlePasswordSubmit = () => {
+    const handlePasswordSubmit = async () => {
         if (newPassword !== confirmPassword) {
             toast.error('Passwords do not match.');
             return;
         }
-        // Change password
-        // Example API call
-        // changePassword(email, code, newPassword)
-        //     .then(response => {
-        //         toast.success('Password changed successfully.');
-        //         handleClose();
-        //     })
-        //     .catch(error => {
-        //         toast.error('Failed to change password.');
-        //     });
-        handleClose(); // For demonstration purposes
+        try {
+            const response = await axios.post('http://localhost:5001/api/users/verify-code-and-change-password', { email, code: code.join(''), newPassword });
+            toast.success(response.data.message);
+            handleClose();
+        } catch (error) {
+            toast.error(error.response.data.message);
+        }
+    };
+
+    const handleCodeChange = (e, index) => {
+        const newCode = [...code];
+        newCode[index] = e.target.value;
+        setCode(newCode);
+
+        // Move to the next input box
+        if (e.target.value.length === 1 && index < 5) {
+            document.getElementById(`code-input-${index + 1}`).focus();
+        }
+    };
+
+    const handlePaste = (e) => {
+        const paste = e.clipboardData.getData('text');
+        if (paste.length === 6) {
+            setCode(paste.split(''));
+        }
     };
 
     return (
@@ -81,19 +88,17 @@ const ForgetPasswordModal = ({ show, handleClose }) => {
                         <Form>
                             <Form.Group controlId="formBasicCode">
                                 <Form.Label>Please enter the 6 digit OTP sent to your email address</Form.Label>
-                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between' }} onPaste={handlePaste}>
                                     {Array.from({ length: 6 }).map((_, index) => (
                                         <Form.Control
                                             key={index}
                                             type="text"
                                             maxLength="1"
-                                            value={code[index] || ''}
-                                            onChange={(e) => {
-                                                const newCode = code.split('');
-                                                newCode[index] = e.target.value;
-                                                setCode(newCode.join(''));
-                                            }}
-                                            style={{ width: '2rem', textAlign: 'center' }}
+                                            value={code[index]}
+                                            onChange={(e) => handleCodeChange(e, index)}
+                                            style={{ width: '3rem', height: '3rem', textAlign: 'center', fontSize: '1.5rem', marginRight: '0.5rem' }}
+                                            id={`code-input-${index}`}
+                                            className="code-input"
                                         />
                                     ))}
                                 </div>

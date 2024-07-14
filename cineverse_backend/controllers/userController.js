@@ -116,8 +116,7 @@ const changePassword = async (req, res) => {
 };
 
 const generateRandomCode = () => {
-  const characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   let code = "";
   for (let i = 0; i < 6; i++) {
     code += characters.charAt(Math.floor(Math.random() * characters.length));
@@ -127,7 +126,6 @@ const generateRandomCode = () => {
 
 // Send code to user's email
 const sendCodeToEmail = async (email, code) => {
-  // Create a nodemailer transporter
   let transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -136,7 +134,6 @@ const sendCodeToEmail = async (email, code) => {
     },
   });
 
-  // Construct email message
   let mailOptions = {
     from: process.env.EMAIL_USERNAME,
     to: email,
@@ -144,7 +141,6 @@ const sendCodeToEmail = async (email, code) => {
     text: `Your verification code is: ${code}`,
   };
 
-  // Send email
   await transporter.sendMail(mailOptions);
 };
 
@@ -169,6 +165,38 @@ const requestCode = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "Verification code sent to your email.",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
+
+const verifyCode = async (req, res) => {
+  const { email, code } = req.body;
+
+  try {
+    const user = await User.findOne({ where: { email } });
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found.",
+      });
+    }
+
+    if (code !== user.resetCode) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid verification code.",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Verification code is correct.",
     });
   } catch (error) {
     console.error(error);
@@ -218,5 +246,4 @@ const verifyCodeAndChangePassword = async (req, res) => {
   }
 };
 
-
-module.exports = { registerUser, loginUser, getUserDetails, updateUser, changePassword, generateRandomCode, sendCodeToEmail, requestCode, verifyCodeAndChangePassword };
+module.exports = { registerUser, loginUser, getUserDetails, updateUser, changePassword, generateRandomCode, sendCodeToEmail, requestCode, verifyCodeAndChangePassword, verifyCode };
