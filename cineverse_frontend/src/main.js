@@ -1,8 +1,7 @@
-// src/Main.js
-
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
+import axios from "axios";
 import LoginModal from "./component/loginModal";
 import Navbar from "./component/navbar";
 import RegisterModal from "./component/registerModal";
@@ -30,13 +29,33 @@ const Main = ({
   showRegisterModal,
   handleRegisterModalShow,
   handleRegisterModalClose,
-  isLoggedIn,
-  user,
-  setIsLoggedIn,
-  setUser,
 }) => {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith("/admin");
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        if (token) {
+          const response = await axios.get('http://localhost:5001/api/users/profile', {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          setUser(response.data.user);
+          setIsLoggedIn(true);
+        }
+      } catch (err) {
+        console.error('Error fetching user:', err);
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   return (
     <>
@@ -53,7 +72,8 @@ const Main = ({
         <Route path="/" element={<Homepage />} />
         <Route path="/seat-selection/:scheduleId" element={<SeatSelection />} />
         <Route path="/movie/:id" element={<Movie />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/profile" element={<Profile user={user} setUser={setUser} />} />
+        <Route path="/faq" element={<FAQ />} />
         <Route element={<AdminRoutes />}>
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/admin/movies" element={<ManageMovies />} />
@@ -64,7 +84,6 @@ const Main = ({
           <Route path="/admin/showtimes/add" element={<AddShowtime />} />
           <Route path="/admin/schedules" element={<ManageSchedules />} />
           <Route path="/admin/schedules/add" element={<AddSchedule />} />
-          <Route path="/faq" element={<FAQ />} />
         </Route>
       </Routes>
       <LoginModal
@@ -78,7 +97,6 @@ const Main = ({
         handleClose={handleRegisterModalClose}
       />
       {!isAdminRoute && <Footer />}
-
     </>
   );
 };
