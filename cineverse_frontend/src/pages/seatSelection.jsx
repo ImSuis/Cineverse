@@ -1,11 +1,14 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import '../style/seatSelection.css';
 import Seat from './seat';
 
 const SeatSelection = () => {
     const { scheduleId } = useParams();
+    const navigate = useNavigate();
 
     const [seats, setSeats] = useState([]);
     const [selectedSeats, setSelectedSeats] = useState([]);
@@ -50,36 +53,15 @@ const SeatSelection = () => {
         }
     };
 
-    const handleBooking = async () => {
-        const seatIds = selectedSeats.map(seat => {
-            const row = seat.label.charCodeAt(0) - 65 + 1;
-            const column = parseInt(seat.label.slice(1), 10);
-            const seatObj = seats.find(seat => seat.row === String.fromCharCode(64 + row) && seat.column === column);
-            return seatObj.id;
-        });
+    const handleBooking = () => {
+        const token = localStorage.getItem('token'); // Retrieve the token from localStorage
 
-        try {
-            const token = localStorage.getItem('token'); // Retrieve the token from localStorage
-
-            const response = await axios.post('http://localhost:5001/api/bookings/create', {
-                scheduleId,
-                seatIds,
-                totalPrice: bookingInfo.totalPrice,
-            }, {
-                headers: {
-                    Authorization: `Bearer ${token}` // Include the token in the Authorization header
-                }
-            });
-
-            if (response.status === 201) {
-                alert('Booking created successfully!');
-            } else {
-                alert('Error creating booking.');
-            }
-        } catch (error) {
-            console.error('Error creating booking:', error);
-            alert('Error creating booking.');
+        if (!token) {
+            toast.error('You need to be logged in to continue.');
+            return;
         }
+
+        navigate('/confirmation', { state: { selectedSeats, bookingInfo, scheduleId, seats } });
     };
 
     const renderSeats = () => {
@@ -164,7 +146,7 @@ const SeatSelection = () => {
                     <span>Total Price:</span>
                     <span className="price">Rs. {bookingInfo.totalPrice}</span>
                 </div>
-                <button onClick={handleBooking}>Confirm Booking</button>
+                <button onClick={handleBooking}>Continue</button>
             </div>
         </div>
     );

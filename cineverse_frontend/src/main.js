@@ -22,6 +22,7 @@ import Footer from "./component/footer";
 import Profile from "./pages/profile";
 import FAQ from "./pages/faq";
 import AuthModalManager from "./pages/authModalManger";
+import Confirmation from "./pages/confirmation";
 
 const Main = () => {
   const location = useLocation();
@@ -75,6 +76,7 @@ const Main = () => {
         <Route path="/movie/:id" element={<Movie />} />
         <Route path="/profile" element={<Profile user={user} setUser={setUser} />} />
         <Route path="/faq" element={<FAQ />} />
+        <Route path="/confirmation" element={<Confirmation />} />
         <Route element={<AdminRoutes />}>
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/admin/movies" element={<ManageMovies />} />
