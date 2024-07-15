@@ -1,0 +1,45 @@
+/* src/style/searchModal.css */
+.custom-search-modal {
+    padding: 0;
+  }
+  
+  .custom-search-modal-body {
+    display: flex;
+    padding: 0;
+  }
+  
+  .custom-search-form {
+    display: flex;
+    width: 100%;
+  }
+  
+  .custom-search-input-group {
+    display: flex;
+    flex-grow: 1;
+    position: relative;
+  }
+  
+  .custom-search-input {
+    flex-grow: 1;
+    border: none;
+    border-radius: 0;
+    font-size: 20px;
+    padding: 10px;
+  }
+  
+  .custom-search-icon-button {
+    background-color: orange;
+    border: none;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px;
+    cursor: pointer;
+    height: 100%;
+  }
+  
+  .custom-search-icon-button:hover {
+    background-color: darkorange;
+  }
+  

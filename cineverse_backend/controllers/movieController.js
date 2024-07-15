@@ -130,9 +130,38 @@ const getComingSoonMovies = async (req, res, next) => {
   }
 };
 
+const searchMovies = async (req, res, next) => {
+  try {
+    const { title } = req.query;
+
+    if (!title) {
+      return res.status(400).json({ message: "Title query parameter is required" });
+    }
+
+    const movies = await Movie.findAll({
+      where: {
+        title: {
+          [Op.iLike]: `%${title}%`, // Case-insensitive search for matching titles
+        },
+      },
+    });
+
+    if (movies.length === 0) {
+      return res.status(404).json({ message: "No movies found matching the title" });
+    }
+
+    res.status(200).json({ movies });
+  } catch (error) {
+    console.error("Error searching movies:", error.message);
+    next(error); // Pass the error to the error handling middleware
+  }
+};
+
+
 module.exports = {
   addMovie,
   getSingleMovie,
   getNowShowingMovies,
   getComingSoonMovies,
+  searchMovies,
 };

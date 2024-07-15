@@ -14,6 +14,9 @@ router.get("/now-showing", movieController.getNowShowingMovies);
 // Route to get "Coming Soon" movies
 router.get("/coming-soon", movieController.getComingSoonMovies);
 
+// Route to search movies by title
+router.get("/search", movieController.searchMovies);
+
 // Route to get a single movie by ID
 router.get("/:id", movieController.getSingleMovie);
 

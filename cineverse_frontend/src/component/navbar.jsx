@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
-import { FaBars, FaCaretDown, FaUserCircle } from 'react-icons/fa';
+import { FaBars, FaCaretDown, FaUserCircle, FaSearch } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import { Link as ScrollLink } from 'react-scroll';
 import { logoutUser } from '../api/Api';
+import SearchModal from './searchModal';
 import '../style/navbar.css';
 
 const Navbar = ({ handleLoginModalShow, handleRegisterModalShow, isLoggedIn, user }) => {
   const [activeLink, setActiveLink] = useState('home');
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [searchModalShow, setSearchModalShow] = useState(false);
   const navigate = useNavigate();
 
   const handleLinkClick = (link) => {
@@ -38,6 +40,11 @@ const Navbar = ({ handleLoginModalShow, handleRegisterModalShow, isLoggedIn, use
     setDropdownOpen(false);
   };
 
+  const handleSearchSubmit = (query) => {
+    setSearchModalShow(false);
+    navigate(`/search?query=${query}`);
+  };
+
   return (
     <div className="navbar-container">
       <Container>
@@ -52,11 +59,11 @@ const Navbar = ({ handleLoginModalShow, handleRegisterModalShow, isLoggedIn, use
               <Link to="/" className={activeLink === 'home' ? 'active' : ''} onClick={() => handleLinkClick('home')}>Home</Link>
               <ScrollLink to="now-showing" smooth={true} duration={500} className={activeLink === 'now-showing' ? 'active' : ''} onClick={() => handleLinkClick('now-showing')}>Now Showing</ScrollLink>
               <ScrollLink to="coming-soon" smooth={true} duration={500} className={activeLink === 'coming-soon' ? 'active' : ''} onClick={() => handleLinkClick('coming-soon')}>Coming Soon</ScrollLink>
-              <Link to="#contact-us" className={activeLink === 'contact-us' ? 'active' : ''} onClick={() => handleLinkClick('contact-us')}>Contact Us</Link>
             </div>
           </Col>
           <Col className="login-register-col">
             <div className="login-register">
+              <FaSearch className="search-icon" size={20} onClick={() => setSearchModalShow(true)} />
               {isLoggedIn ? (
                 <div className="profile-menu">
                   <div className="profile-icon" onClick={toggleDropdown}>
@@ -84,6 +91,7 @@ const Navbar = ({ handleLoginModalShow, handleRegisterModalShow, isLoggedIn, use
           </Col>
         </Row>
       </Container>
+      <SearchModal show={searchModalShow} onHide={() => setSearchModalShow(false)} onSubmit={handleSearchSubmit} />
     </div>
   );
 };

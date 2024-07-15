@@ -1,0 +1,51 @@
+.search-results-container {
+  margin: 0;
+  padding: 0;
+}
+
+.search-results-header {
+  height: 45vh;
+  background: linear-gradient(to left, rgb(51, 45, 45), rgb(18, 16, 16));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+}
+
+.search-results-title {
+  color: white;
+  font-size: 28px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.search-results-divider {
+  border-top: 17px dashed black;
+  margin-top: 30px;
+  margin-bottom: 35px;
+}
+
+.custom-poster-container {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  margin-top: 20px;
+  margin-left: 90px; /* Adjust based on the screen size */
+}
+
+.custom-poster-wrapper {
+  position: relative;
+  margin: 10px;
+  flex: 1;
+  max-width: 30%; /* Adjust based on the screen size */
+}
+
+.custom-now-showing-poster {
+  height: 350px;
+  width: auto;
+  transition: transform 0.3s ease;
+}
+
+.custom-now-showing-poster:hover {
+  transform: scale(1.05); /* Optional: Add a hover effect to the posters */
+}
