@@ -7,7 +7,7 @@ const multipartyMiddleware = multiparty();
 
 // Route to add a new movie
 router.post("/add", multipartyMiddleware, movieController.addMovie);
-router.put("/:id/edit", multipartyMiddleware, movieController.editMovie);
+router.put("/edit/:id", multipartyMiddleware, movieController.editMovie);
 
 // Route to get "Now Showing" movies
 router.get("/now-showing", movieController.getNowShowingMovies);

@@ -1,7 +1,6 @@
-// src/components/ManageMovies.js
-
 import React, { useEffect, useState } from 'react';
 import { Table, Button } from 'react-bootstrap';
+import { FaEdit } from 'react-icons/fa'; // Import edit icon
 import Sidebar from '../admin/sidebar';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -17,7 +16,7 @@ const ManageMovies = () => {
     const fetchMovies = async () => {
         try {
             const response = await axios.get('http://localhost:5001/api/movies/now-showing');
-            setMovies(response.data.movies); // Assuming response.data.movies is an array of movies
+            setMovies(response.data.movies);
         } catch (error) {
             console.error('Error fetching movies:', error);
         }
@@ -25,6 +24,10 @@ const ManageMovies = () => {
 
     const handleAddMovie = () => {
         navigate('/admin/movies/add');
+    };
+
+    const handleEditMovie = (id) => {
+        navigate(`/admin/movies/edit/${id}`);
     };
 
     return (
@@ -46,6 +49,7 @@ const ManageMovies = () => {
                             <th>Genre</th>
                             <th>Rating</th>
                             <th>Language</th>
+                            <th>Edit</th> {/* New column for Edit */}
                         </tr>
                     </thead>
                     <tbody>
@@ -59,6 +63,11 @@ const ManageMovies = () => {
                                 <td>{movie.genre}</td>
                                 <td>{movie.rating}</td>
                                 <td>{movie.language}</td>
+                                <td>
+                                    <Button variant="link" onClick={() => handleEditMovie(movie.id)}>
+                                        <FaEdit />
+                                    </Button>
+                                </td>
                             </tr>
                         ))}
                     </tbody>

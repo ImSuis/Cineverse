@@ -24,6 +24,7 @@ import FAQ from "./pages/faq";
 import AuthModalManager from "./pages/authModalManger";
 import Confirmation from "./pages/confirmation";
 import SearchResults from "./pages/searchResults";
+import EditMovie from "./pages/admin/editMovies";
 
 const Main = () => {
   const location = useLocation();
@@ -90,6 +91,7 @@ const Main = () => {
           <Route path="/admin/showtimes/add" element={<AddShowtime />} />
           <Route path="/admin/schedules" element={<ManageSchedules />} />
           <Route path="/admin/schedules/add" element={<AddSchedule />} />
+          <Route path="/admin/movies/edit/:id" element={<EditMovie />} />
         </Route>
       </Routes>
       <AuthModalManager
