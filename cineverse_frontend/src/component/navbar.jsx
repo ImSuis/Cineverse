@@ -40,6 +40,11 @@ const Navbar = ({ handleLoginModalShow, handleRegisterModalShow, isLoggedIn, use
     setDropdownOpen(false);
   };
 
+  const navigateToAdmin = () => {
+    navigate('/admin');
+    setDropdownOpen(false);
+  };
+
   const handleSearchSubmit = (query) => {
     setSearchModalShow(false);
     navigate(`/search?query=${query}`);
@@ -74,6 +79,9 @@ const Navbar = ({ handleLoginModalShow, handleRegisterModalShow, isLoggedIn, use
                   {dropdownOpen && (
                     <div className="dropdown-menu">
                       <button onClick={navigateToProfile}>Profile</button>
+                      {user?.isAdmin && (
+                        <button onClick={navigateToAdmin}>Admin</button>
+                      )}
                       <button onClick={handleLogout}>Logout</button>
                     </div>
                   )}
