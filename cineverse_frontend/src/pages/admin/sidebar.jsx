@@ -1,7 +1,7 @@
 // src/components/Sidebar.js
 
 import React from 'react';
-import { FaFilm, FaTachometerAlt, FaTicketAlt, FaLocationArrow } from 'react-icons/fa'; // Example icons
+import { FaFilm, FaLocationArrow, FaTachometerAlt, FaTicketAlt } from 'react-icons/fa'; // Example icons
 import { Link } from 'react-router-dom';
 import '../admin/style/sidebar.css';
 
@@ -9,7 +9,7 @@ const Sidebar = () => {
     const user = JSON.parse(localStorage.getItem('user'));
 
     const handleLinkClick = (section) => {
-        console.log(`Navigating to ${section}`);
+        //console.log(`Navigating to ${section}`);
     };
 
     return (
@@ -27,7 +27,7 @@ const Sidebar = () => {
                             Dashboard
                         </Link>
                     </li>
-                    
+
                     <li>
                         <Link to="/admin/movies">
                             <FaFilm className="sidebar-icon" />

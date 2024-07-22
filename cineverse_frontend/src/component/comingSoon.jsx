@@ -14,7 +14,7 @@ const ComingSoon = () => {
     useEffect(() => {
         const fetchComingSoonMovies = async () => {
             try {
-                const response = await axios.get('http://localhost:5001/api/movies/coming-soon');
+                const response = await axios.get('https://localhost:5001/api/movies/coming-soon');
                 setComingSoonMovies(response.data.movies);
             } catch (error) {
                 console.error('Error fetching coming soon movies:', error.message);

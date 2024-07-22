@@ -16,7 +16,7 @@ const ManageShowtimes = () => {
 
     const fetchShowtimes = async () => {
         try {
-            const response = await axios.get('http://localhost:5001/api/showtimes', {
+            const response = await axios.get('https://localhost:5001/api/showtimes', {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}` // Include the token here
                 }

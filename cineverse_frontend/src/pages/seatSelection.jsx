@@ -23,7 +23,7 @@ const SeatSelection = ({ handleLoginModalShow }) => {
     useEffect(() => {
         const fetchSeats = async () => {
             try {
-                const response = await axios.get(`http://localhost:5001/api/seats/booking/${scheduleId}`);
+                const response = await axios.get(`https://localhost:5001/api/seats/booking/${scheduleId}`);
                 if (Array.isArray(response.data)) {
                     setSeats(response.data);
                 } else {

@@ -13,7 +13,7 @@ const ForgetPasswordModal = ({ show, handleClose }) => {
 
     const handleEmailSubmit = async () => {
         try {
-            const response = await axios.post('http://localhost:5001/api/users/request-code', { email });
+            const response = await axios.post('https://localhost:5001/api/users/request-code', { email });
             toast.success(response.data.message);
             setStep(2);
         } catch (error) {
@@ -23,7 +23,7 @@ const ForgetPasswordModal = ({ show, handleClose }) => {
 
     const handleCodeSubmit = async () => {
         try {
-            const response = await axios.post('http://localhost:5001/api/users/verify-code', { email, code: code.join('') });
+            const response = await axios.post('https://localhost:5001/api/users/verify-code', { email, code: code.join('') });
             toast.success(response.data.message);
             setStep(3);
         } catch (error) {
@@ -37,7 +37,7 @@ const ForgetPasswordModal = ({ show, handleClose }) => {
             return;
         }
         try {
-            const response = await axios.post('http://localhost:5001/api/users/verify-code-and-change-password', { email, code: code.join(''), newPassword });
+            const response = await axios.post('https://localhost:5001/api/users/verify-code-and-change-password', { email, code: code.join(''), newPassword });
             toast.success(response.data.message);
             handleClose();
         } catch (error) {

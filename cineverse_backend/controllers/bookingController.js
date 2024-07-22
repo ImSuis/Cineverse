@@ -14,15 +14,22 @@ exports.createBooking = async (req, res) => {
     const userId = req.user.id;
 
     // Log the received data for debugging
-    console.log("Decoded User:", req.user);
-    console.log("Received data:");
-    console.log("Schedule ID:", scheduleId);
-    console.log("Seat IDs:", seatIds);
-    console.log("Total Price:", totalPrice);
+    //console.log("Decoded User:", req.user);
+    //console.log("Received data:");
+    //console.log("Schedule ID:", scheduleId);
+    //console.log("Seat IDs:", seatIds);
+    //console.log("Total Price:", totalPrice);
 
     // Validate scheduleId and seatIds
-    if (!scheduleId || !seatIds || !Array.isArray(seatIds) || seatIds.length === 0) {
-      return res.status(400).json({ message: "Invalid or missing schedule ID or seat IDs" });
+    if (
+      !scheduleId ||
+      !seatIds ||
+      !Array.isArray(seatIds) ||
+      seatIds.length === 0
+    ) {
+      return res
+        .status(400)
+        .json({ message: "Invalid or missing schedule ID or seat IDs" });
     }
 
     // Check seat availability for the schedule
@@ -37,7 +44,7 @@ exports.createBooking = async (req, res) => {
       const invalidSeatIds = seatIds.filter(
         (id) => !seats.find((seat) => seat.id === id)
       );
-      console.log("Invalid Seat IDs:", invalidSeatIds);
+      //console.log("Invalid Seat IDs:", invalidSeatIds);
       return res.status(400).json({
         message: "Invalid seat IDs provided",
         invalidSeatIds,
@@ -87,8 +94,6 @@ exports.createBooking = async (req, res) => {
   }
 };
 
-
-
 exports.getBookingsByUserId = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -99,21 +104,25 @@ exports.getBookingsByUserId = async (req, res) => {
         {
           model: Schedule,
           include: [
-            { model: Movie, attributes: ['title'] }, // Include Movie and select only 'title'
-            { model: Showtime, attributes: ['time'] } // Include Showtime and select only 'time'
-          ]
+            { model: Movie, attributes: ["title"] }, // Include Movie and select only 'title'
+            { model: Showtime, attributes: ["time"] }, // Include Showtime and select only 'time'
+          ],
         },
-        { model: Seat }
-      ]
+        { model: Seat },
+      ],
     });
 
     if (!bookings.length) {
-      return res.status(404).json({ message: "No bookings found for this user" });
+      return res
+        .status(404)
+        .json({ message: "No bookings found for this user" });
     }
 
     res.status(200).json(bookings);
   } catch (error) {
     console.error("Error fetching bookings by user ID:", error);
-    res.status(500).json({ message: "Error fetching bookings by user ID", error });
+    res
+      .status(500)
+      .json({ message: "Error fetching bookings by user ID", error });
   }
 };

@@ -18,7 +18,7 @@ function UserProfile({ user, setUser }) {
     const fetchUserDetails = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:5001/api/users/profile', {
+        const response = await axios.get('https://localhost:5001/api/users/profile', {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -48,7 +48,7 @@ function UserProfile({ user, setUser }) {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.put('http://localhost:5001/api/users/update', {
+      const response = await axios.put('https://localhost:5001/api/users/update', {
         name: localUser.name,
         phone: localUser.phone
       }, {

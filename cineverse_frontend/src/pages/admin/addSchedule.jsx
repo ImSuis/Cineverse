@@ -24,7 +24,7 @@ const AddSchedule = () => {
 
     const fetchMovies = async () => {
         try {
-            const response = await axios.get('http://localhost:5001/api/movies/now-showing');
+            const response = await axios.get('https://localhost:5001/api/movies/now-showing');
             setMovies(response.data.movies); // Assuming response.data.movies is an array of movies
         } catch (error) {
             console.error('Error fetching movies:', error);
@@ -33,7 +33,7 @@ const AddSchedule = () => {
 
     const fetchLocations = async () => {
         try {
-            const response = await axios.get('http://localhost:5001/api/locations', {
+            const response = await axios.get('https://localhost:5001/api/locations', {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`
                 }
@@ -46,7 +46,7 @@ const AddSchedule = () => {
 
     const fetchShowtimes = async () => {
         try {
-            const response = await axios.get('http://localhost:5001/api/showtimes', {
+            const response = await axios.get('https://localhost:5001/api/showtimes', {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`
                 }
@@ -60,7 +60,7 @@ const AddSchedule = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('http://localhost:5001/api/schedules/create', {
+            await axios.post('https://localhost:5001/api/schedules/create', {
                 date,
                 MovieId: selectedMovie,
                 LocationId: selectedLocation,

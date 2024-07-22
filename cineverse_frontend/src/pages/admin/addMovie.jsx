@@ -43,7 +43,7 @@ const AddMovie = () => {
             data.append(key, formData[key]);
         }
         try {
-            await axios.post('http://localhost:5001/api/movies/add', data, {
+            await axios.post('https://localhost:5001/api/movies/add', data, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

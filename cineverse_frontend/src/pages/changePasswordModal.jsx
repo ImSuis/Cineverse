@@ -18,7 +18,7 @@ const ChangePasswordModal = ({ show, handleClose }) => {
     
         try {
           const token = localStorage.getItem('token');
-          await axios.put('http://localhost:5001/api/users/change-password', {
+          await axios.put('https://localhost:5001/api/users/change-password', {
             currentPassword,
             newPassword
           }, {

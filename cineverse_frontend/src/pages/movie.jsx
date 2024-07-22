@@ -18,7 +18,7 @@ const Movie = () => {
     useEffect(() => {
         const fetchMovie = async () => {
             try {
-                const response = await axios.get(`http://localhost:5001/api/movies/${id}`);
+                const response = await axios.get(`https://localhost:5001/api/movies/${id}`);
                 setMovie(response.data.movie);
             } catch (error) {
                 console.error('Error fetching movie:', error.message);
@@ -59,8 +59,8 @@ const Movie = () => {
     // Function to fetch schedules when "Get Ticket" button is clicked
     const handleGetTicket = async () => {
         try {
-            const response = await axios.get(`http://localhost:5001/api/schedules/movie/${id}`);
-            console.log('Backend response:', response.data); // Log the response data
+            const response = await axios.get(`https://localhost:5001/api/schedules/movie/${id}`);
+            //console.log('Backend response:', response.data); // Log the response data
             const groupedSchedules = response.data;
             const dates = Object.keys(groupedSchedules);
 

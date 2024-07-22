@@ -16,7 +16,7 @@ const ManageSchedules = () => {
 
     const fetchSchedules = async () => {
         try {
-            const response = await axios.get('http://localhost:5001/api/schedules',  {
+            const response = await axios.get('https://localhost:5001/api/schedules',  {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}` // Include the token here
                 }

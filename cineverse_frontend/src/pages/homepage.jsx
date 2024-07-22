@@ -17,7 +17,7 @@ const Homepage = () => {
     useEffect(() => {
         const fetchNowShowingMovies = async () => {
             try {
-                const response = await axios.get('http://localhost:5001/api/movies/now-showing');
+                const response = await axios.get('https://localhost:5001/api/movies/now-showing');
                 setNowShowingMovies(response.data.movies);
             } catch (error) {
                 console.error('Error fetching now showing movies:', error.message);
@@ -29,7 +29,7 @@ const Homepage = () => {
 
     const handleGetTicket = async (movieId) => {
         try {
-            const response = await axios.get(`http://localhost:5001/api/schedules/movie/${movieId}`);
+            const response = await axios.get(`https://localhost:5001/api/schedules/movie/${movieId}`);
             const groupedSchedules = response.data;
             const dates = Object.keys(groupedSchedules);
 

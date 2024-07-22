@@ -25,7 +25,7 @@ const Confirmation = () => {
         try {
             const token = localStorage.getItem('token'); // Retrieve the token from local storage
 
-            const response = await axios.post('http://localhost:5001/api/bookings/create', {
+            const response = await axios.post('https://localhost:5001/api/bookings/create', {
                 scheduleId,
                 seatIds,
                 totalPrice: bookingInfo.totalPrice,

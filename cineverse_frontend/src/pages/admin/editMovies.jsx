@@ -28,7 +28,7 @@ const EditMovie = () => {
     useEffect(() => {
         const fetchMovie = async () => {
             try {
-                const response = await axios.get(`http://localhost:5001/api/movies/${id}`);
+                const response = await axios.get(`https://localhost:5001/api/movies/${id}`);
                 const { movie } = response.data;
 
                 // Convert ISO date string to YYYY-MM-DD
@@ -66,7 +66,7 @@ const EditMovie = () => {
             data.append(key, formData[key]);
         }
         try {
-            await axios.put(`http://localhost:5001/api/movies/edit/${id}`, data, {
+            await axios.put(`https://localhost:5001/api/movies/edit/${id}`, data, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

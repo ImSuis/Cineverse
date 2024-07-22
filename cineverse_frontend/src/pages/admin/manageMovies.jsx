@@ -15,7 +15,7 @@ const ManageMovies = () => {
 
     const fetchMovies = async () => {
         try {
-            const response = await axios.get('http://localhost:5001/api/movies/now-showing');
+            const response = await axios.get('https://localhost:5001/api/movies/now-showing');
             setMovies(response.data.movies);
         } catch (error) {
             console.error('Error fetching movies:', error);

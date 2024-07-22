@@ -25,8 +25,8 @@ const addMovie = async (req, res, next) => {
       rating,
     } = req.body;
 
-    console.log("Request body:", req.body);
-    console.log("Request files:", req.files);
+    //console.log("Request body:", req.body);
+    //console.log("Request files:", req.files);
 
     // Check if 'poster' and 'landscapeImage' are defined in req.files
     if (!req.files || !req.files.poster || !req.files.landscapeImage) {
@@ -135,7 +135,9 @@ const searchMovies = async (req, res, next) => {
     const { title } = req.query;
 
     if (!title) {
-      return res.status(400).json({ message: "Title query parameter is required" });
+      return res
+        .status(400)
+        .json({ message: "Title query parameter is required" });
     }
 
     const movies = await Movie.findAll({
@@ -147,7 +149,9 @@ const searchMovies = async (req, res, next) => {
     });
 
     if (movies.length === 0) {
-      return res.status(404).json({ message: "No movies found matching the title" });
+      return res
+        .status(404)
+        .json({ message: "No movies found matching the title" });
     }
 
     res.status(200).json({ movies });
@@ -182,18 +186,24 @@ const editMovie = async (req, res, next) => {
     // Optional: Handle file uploads for poster and landscape images
     if (req.files) {
       if (req.files.poster) {
-        const posterResult = await cloudinary.uploader.upload(req.files.poster.path, {
-          folder: "movie_posters",
-          crop: "fill",
-        });
+        const posterResult = await cloudinary.uploader.upload(
+          req.files.poster.path,
+          {
+            folder: "movie_posters",
+            crop: "fill",
+          }
+        );
         movie.posterUrl = posterResult.secure_url;
       }
 
       if (req.files.landscapeImage) {
-        const landscapeResult = await cloudinary.uploader.upload(req.files.landscapeImage.path, {
-          folder: "movie_landscape",
-          crop: "fill",
-        });
+        const landscapeResult = await cloudinary.uploader.upload(
+          req.files.landscapeImage.path,
+          {
+            folder: "movie_landscape",
+            crop: "fill",
+          }
+        );
         movie.landscapeImageUrl = landscapeResult.secure_url;
       }
     }
@@ -205,7 +215,7 @@ const editMovie = async (req, res, next) => {
     movie.genre = genre || movie.genre;
     movie.runtime = runtime || movie.runtime;
     movie.director = director || movie.director;
-    movie.cast = cast ? cast.split(",").map(c => c.trim()) : movie.cast;
+    movie.cast = cast ? cast.split(",").map((c) => c.trim()) : movie.cast;
     movie.language = language || movie.language;
     movie.trailerUrl = trailerUrl || movie.trailerUrl;
     movie.rating = rating || movie.rating;
@@ -225,5 +235,5 @@ module.exports = {
   getNowShowingMovies,
   getComingSoonMovies,
   searchMovies,
-  editMovie
+  editMovie,
 };

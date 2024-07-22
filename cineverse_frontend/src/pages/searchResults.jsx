@@ -10,7 +10,7 @@ const SearchResults = () => {
   useEffect(() => {
     const fetchMovies = async () => {
       try {
-        const response = await fetch(`http://localhost:5001/api/movies/search?title=${searchQuery}`);
+        const response = await fetch(`https://localhost:5001/api/movies/search?title=${searchQuery}`);
         const data = await response.json();
         setMovies(data.movies);
       } catch (error) {

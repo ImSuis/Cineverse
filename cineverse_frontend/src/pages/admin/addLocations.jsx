@@ -23,7 +23,7 @@ const AddLocation = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('http://localhost:5001/api/locations/create', formData, {
+            await axios.post('https://localhost:5001/api/locations/create', formData, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`, // Include the token
                     'Content-Type': 'application/json'
