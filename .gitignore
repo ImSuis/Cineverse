@@ -1,3 +1,9 @@
 cineverse_backend/.env
 cineverse_backend/node_modules/
 cineverse_frontend/node_modules/
+cineverse_backend/server.crt
+cineverse_backend/server.key
+cineverse_frontend/.env
+cineverse_frontend/frontend.csr
+cineverse_frontend/frontend.key
+cineverse_frontend/frontend.crt

@@ -3,6 +3,8 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const multiparty = require("connect-multiparty");
 const cloudinary = require("cloudinary").v2;
+const fs = require("fs");
+const https = require("https");
 
 // Initialize dotenv to read .env file
 dotenv.config();
@@ -56,9 +58,23 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: "Server error", error: err.message });
 });
 
+// Read the SSL certificate files
+const privateKey = fs.readFileSync("server.key");
+const certificate = fs.readFileSync("server.crt");
+
+const credentials = {
+  key: privateKey,
+  cert: certificate,
+};
+
 const PORT = process.env.PORT || 5001;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+
+// Create an HTTPS server
+const httpsServer = https.createServer(credentials, app);
+
+// Start the HTTPS server
+httpsServer.listen(PORT, () => {
+  //console.log(`HTTPS Server is running on port ${PORT}`);
 });
 
 module.exports = app;
