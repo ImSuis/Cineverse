@@ -6,6 +6,7 @@ import NowShowing from '../component/nowShowing';
 import '../style/homepage.css';
 import ScheduleModal from '../component/scheduleModal'; // Import the ScheduleModal component
 import Footer from '../component/footer';
+import { Link } from 'react-router-dom';
 
 const Homepage = () => {
     const [nowShowingMovies, setNowShowingMovies] = useState([]);
@@ -49,6 +50,9 @@ const Homepage = () => {
                 {nowShowingMovies.map(movie => (
                     <Carousel.Item key={movie.id}>
                         <div className="carousel-image" style={{ backgroundImage: `url(${movie.landscapeImageUrl})` }}>
+                            <Link to={`/movie/${movie.id}`}>
+                                <div className="carousel-image-link" />
+                            </Link>
                             <button className="get-ticket-button" onClick={() => handleGetTicket(movie.id)}>
                                 Get Ticket
                             </button>

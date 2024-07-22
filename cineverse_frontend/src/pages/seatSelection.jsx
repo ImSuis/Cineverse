@@ -6,7 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import '../style/seatSelection.css';
 import Seat from './seat';
 
-const SeatSelection = () => {
+const SeatSelection = ({ handleLoginModalShow }) => {
     const { scheduleId } = useParams();
     const navigate = useNavigate();
 
@@ -58,6 +58,7 @@ const SeatSelection = () => {
 
         if (!token) {
             toast.error('You need to be logged in to continue.');
+            handleLoginModalShow(); // Show login modal
             return;
         }
 

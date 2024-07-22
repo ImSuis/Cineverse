@@ -12,6 +12,8 @@ const Confirmation = () => {
     const [khaltiId, setKhaltiId] = useState('');
     const [khaltiPin, setKhaltiPin] = useState('');
 
+    const user = JSON.parse(localStorage.getItem('user')); // Retrieve user details from local storage
+
     const handlePayment = async () => {
         const seatIds = selectedSeats.map(seat => {
             const row = seat.label.charCodeAt(0) - 65 + 1;
@@ -21,7 +23,7 @@ const Confirmation = () => {
         });
 
         try {
-            const token = localStorage.getItem('token'); // Retrieve the token from localStorage
+            const token = localStorage.getItem('token'); // Retrieve the token from local storage
 
             const response = await axios.post('http://localhost:5001/api/bookings/create', {
                 scheduleId,
@@ -56,8 +58,8 @@ const Confirmation = () => {
             <div className="payment-details">
                 <h2>Payment Details</h2>
                 <p>Billed to:</p>
-                <p>Test User</p>
-                <p>test@email.com</p>
+                <p>{user?.name || 'Test User'}</p>
+                <p>{user?.email || 'test@email.com'}</p>
                 <p>Amount Summary:</p>
                 <div className="total-amount">
                     <span>Total Amount</span>

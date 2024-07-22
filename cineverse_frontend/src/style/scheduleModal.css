@@ -1,4 +1,4 @@
-.unique-modal {
+.custom-unique-modal {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -14,12 +14,12 @@
     transition: visibility 0s, opacity 0.3s;
 }
 
-.unique-modal.show {
+.custom-unique-modal.show {
     visibility: visible;
     opacity: 1;
 }
 
-.unique-modal-content {
+.custom-unique-modal-content {
     width: 100vh;
     height: 70vh;
     background-color: #fae8e9; /* Cream color */
@@ -31,7 +31,7 @@
     font-family: 'Judson', serif; /* Use Judson font */
 }
 
-.unique-modal-close {
+.custom-unique-modal-close {
     position: absolute;
     top: 10px;
     right: 10px;
@@ -42,14 +42,14 @@
     color: black;
 }
 
-.unique-modal-buttons {
+.custom-unique-modal-buttons {
     display: flex;
     justify-content: flex-start; /* Start buttons from the left */
     margin-bottom: 10px; /* Adjust margin as needed */
     padding: 10px; /* Padding around the buttons */
 }
 
-.unique-modal-button {
+.custom-unique-modal-button {
     height: 65px;
     padding: 0 20px; /* Horizontal padding */
     background-color: #fae8e9; /* Inactive button background color */
@@ -64,16 +64,16 @@
     position: relative;
 }
 
-.unique-modal-button:last-child {
+.custom-unique-modal-button:last-child {
     margin-right: 0; /* No margin for the last button */
 }
 
-.unique-modal-button.active {
+.custom-unique-modal-button.active {
     background-color: black; /* Active state background color */
     color: white; /* Active state text color */
 }
 
-.button-date {
+.custom-button-date {
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -81,34 +81,34 @@
     align-items: flex-start;
 }
 
-.button-date-month {
+.custom-button-date-month {
     font-size: 20px;
     font-weight: bold;
 }
 
-.button-date-dayName {
+.custom-button-date-dayName {
     font-size: 20px;
 }
 
-.button-day {
+.custom-button-day {
     font-size: 50px;
     font-weight: bold;
     margin-left: auto; /* Push day to the right */
 }
 
-.cinema-name {
+.custom-cinema-name {
     font-size: 1.5rem;
     margin-top: 20px;
     font-weight: bold;
     text-align: left; /* Align cinema name to the left */
 }
 
-.unique-modal-time-buttons {
+.custom-unique-modal-time-buttons {
     display: flex;
     flex-wrap: wrap;
 }
 
-.unique-modal-time-button {
+.custom-unique-modal-time-button {
     height: 40px; /* Decreased height */
     padding: 0 15px; /* Horizontal padding */
     background-color: #fae8e9; /* Inactive button background color */
@@ -122,13 +122,13 @@
     transition: background-color 0.3s, color 0.3s;
 }
 
-.unique-modal-time-button:hover,
-.unique-modal-time-button.active {
+.custom-unique-modal-time-button:hover,
+.custom-unique-modal-time-button.active {
     background-color: black; /* Background color on hover and active */
     color: white; /* Text color on hover and active */
 }
 
-.proceed-button {
+.custom-proceed-button {
     padding: 10px 15px; /* Decrease height by reducing top and bottom padding */
     background-color: #050505;
     color: white;
@@ -145,12 +145,19 @@
     width: fit-content; /* Width will be determined by the content */
 }
 
-.proceed-button:hover {
+.custom-proceed-button:hover {
     background-color: #000000;
 }
 
-.proceed-button:disabled {
+.custom-proceed-button:disabled {
     background-color: #ddd; /* Disabled button background color */
     color: #999; /* Disabled button text color */
     cursor: not-allowed; /* Disabled cursor */
+}
+.select-time-label {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 20px 0 10px 0; /* Adjust the margins as needed */
+    text-align: left;
+    font-family: 'Judson', serif; /* Use Judson font */
 }

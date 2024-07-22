@@ -74,7 +74,7 @@ const Main = () => {
       <ToastContainer />
       <Routes>
         <Route path="/" element={<Homepage />} />
-        <Route path="/seat-selection/:scheduleId" element={<SeatSelection />} />
+        <Route path="/seat-selection/:scheduleId" element={<SeatSelection handleLoginModalShow={handleLoginModalShow} />} />
         <Route path="/movie/:id" element={<Movie />} />
         <Route path="/profile" element={<Profile user={user} setUser={setUser} />} />
         <Route path="/faq" element={<FAQ />} />
