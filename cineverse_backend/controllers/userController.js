@@ -1,14 +1,50 @@
-// controllers/userController.js
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const User = require('../model/userModel'); // Correct import path
-require('dotenv').config();
-const nodemailer = require('nodemailer');
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const User = require("../model/userModel"); // Correct import path
+require("dotenv").config();
+const nodemailer = require("nodemailer");
+const rateLimit = require("express-rate-limit");
+
+const limiter = rateLimit({
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 5,
+  message: 'Too many login attempts, please try again after a minute',
+});
+
+const passwordPolicy = (password) => {
+  if (password.length < 8) {
+    return 'Password must be at least 8 characters long.';
+  }
+  if (!/[A-Z]/.test(password)) {
+    return 'Password must include at least one uppercase letter.';
+  }
+  if (!/[a-z]/.test(password)) {
+    return 'Password must include at least one lowercase letter.';
+  }
+  if (!/\d/.test(password)) {
+    return 'Password must include at least one number.';
+  }
+  if (!/[@$!%*?&]/.test(password)) {
+    return 'Password must include at least one special character.';
+  }
+  return null; // Password meets all requirements
+};
 
 const registerUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
-    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const passwordError = passwordPolicy(password);
+    if (passwordError) {
+      return res.status(400).json({ message: passwordError });
+    }
+
+    const existingUser = await User.findOne({ where: { email } });
+    if (existingUser) {
+      return res.status(400).json({ message: 'Email already exists' });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 12); // Increase the salt rounds
     const newUser = await User.create({ name, email, password: hashedPassword });
     res.status(201).json({ message: 'User registered successfully', user: newUser });
   } catch (error) {
@@ -20,6 +56,7 @@ const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ where: { email } });
+
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
@@ -55,16 +92,16 @@ const getUserDetails = async (req, res) => {
   try {
     const userId = req.user.id;
     const user = await User.findByPk(userId, {
-      attributes: ['id', 'name', 'email', 'phone'] // Select fields to include in the response
+      attributes: ["id", "name", "email", "phone"], // Select fields to include in the response
     });
 
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: "User not found" });
     }
 
     res.status(200).json({ user });
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error: error.message });
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };
 const updateUser = async (req, res) => {
@@ -74,7 +111,7 @@ const updateUser = async (req, res) => {
     const user = await User.findByPk(userId);
 
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: "User not found" });
     }
 
     user.name = name || user.name;
@@ -82,9 +119,9 @@ const updateUser = async (req, res) => {
 
     await user.save();
 
-    res.status(200).json({ message: 'User updated successfully', user });
+    res.status(200).json({ message: "User updated successfully", user });
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error: error.message });
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };
 
@@ -96,12 +133,12 @@ const changePassword = async (req, res) => {
 
     const user = await User.findByPk(userId);
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: "User not found" });
     }
 
     const isMatch = await bcrypt.compare(currentPassword, user.password);
     if (!isMatch) {
-      return res.status(401).json({ message: 'Current password is incorrect' }); // Updated error message
+      return res.status(401).json({ message: "Current password is incorrect" }); // Updated error message
     }
 
     const hashedNewPassword = await bcrypt.hash(newPassword, 10);
@@ -109,14 +146,15 @@ const changePassword = async (req, res) => {
 
     await user.save();
 
-    res.status(200).json({ message: 'Password changed successfully' });
+    res.status(200).json({ message: "Password changed successfully" });
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error: error.message });
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };
 
 const generateRandomCode = () => {
-  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   let code = "";
   for (let i = 0; i < 6; i++) {
     code += characters.charAt(Math.floor(Math.random() * characters.length));
@@ -246,4 +284,16 @@ const verifyCodeAndChangePassword = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, loginUser, getUserDetails, updateUser, changePassword, generateRandomCode, sendCodeToEmail, requestCode, verifyCodeAndChangePassword, verifyCode };
+module.exports = {
+  registerUser,
+  loginUser,
+  getUserDetails,
+  updateUser,
+  changePassword,
+  generateRandomCode,
+  sendCodeToEmail,
+  requestCode,
+  verifyCodeAndChangePassword,
+  verifyCode,
+  limiter,
+};

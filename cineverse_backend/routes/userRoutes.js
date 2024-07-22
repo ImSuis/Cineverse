@@ -1,12 +1,12 @@
 // routes/userRoutes.js
 const express = require('express');
-const { registerUser, loginUser, getUserDetails, updateUser, changePassword, sendCodeToEmail, requestCode, verifyCodeAndChangePassword, verifyCode } = require('../controllers/userController');
+const { registerUser, loginUser, getUserDetails, updateUser, changePassword, sendCodeToEmail, requestCode, verifyCodeAndChangePassword, verifyCode, limiter } = require('../controllers/userController');
 const { authGuard, authGuardAdmin } = require('../middleware/authGuard');
 
 const router = express.Router();
 
 router.post('/register', registerUser);
-router.post('/login', loginUser);
+router.post('/login',limiter, loginUser);
 router.put('/update', authGuard, updateUser);
 router.put('/change-password', authGuard, changePassword);
 router.post('/send-code', sendCodeToEmail);
