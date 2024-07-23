@@ -47,13 +47,19 @@ const registerUser = async (req, res) => {
       return res.status(400).json({ message: 'Email already exists' });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 12); // Increase the salt rounds
-    const newUser = await User.create({ name, email, password: hashedPassword });
+    const hashedPassword = await bcrypt.hash(password, 12);
+    const newUser = await User.create({
+      name,
+      email,
+      password: hashedPassword,
+      previousPasswords: [], // Initialize as an empty array
+    });
     res.status(201).json({ message: 'User registered successfully', user: newUser });
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
+
 
 const loginUser = async (req, res) => {
   try {
@@ -128,7 +134,6 @@ const updateUser = async (req, res) => {
   }
 };
 
-// controllers/userController.js
 const changePassword = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -141,19 +146,50 @@ const changePassword = async (req, res) => {
 
     const isMatch = await bcrypt.compare(currentPassword, user.password);
     if (!isMatch) {
-      return res.status(401).json({ message: "Current password is incorrect" }); // Updated error message
+      return res.status(401).json({ message: "Current password is incorrect" });
+    }
+
+    const passwordError = passwordPolicy(newPassword);
+    if (passwordError) {
+      return res.status(400).json({ message: passwordError });
+    }
+
+    // Check if the new password is in the previous passwords array
+    const isPreviousPassword = await Promise.all(user.previousPasswords.map(async (prevPassword) => {
+      return await bcrypt.compare(newPassword, prevPassword);
+    }));
+
+    if (isPreviousPassword.some(result => result)) {
+      return res.status(400).json({ message: "New password cannot be one of the previous passwords" });
     }
 
     const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+
+    // Update the user's previous passwords array
+    const previousPasswords = user.previousPasswords || [];
+    previousPasswords.push(user.password); // Add the current password to the previous passwords array
+    if (previousPasswords.length > 5) {
+      previousPasswords.shift(); // Keep only the last 5 passwords
+    }
+    user.previousPasswords = previousPasswords;
+
+    // Explicitly mark the previousPasswords field as changed
+    user.setDataValue('previousPasswords', previousPasswords);
+    user.changed('previousPasswords', true);
+
+    // console.log('Updated previousPasswords:', user.previousPasswords); 
+
     user.password = hashedNewPassword;
 
     await user.save();
 
     res.status(200).json({ message: "Password changed successfully" });
   } catch (error) {
+    // console.error(error); // Log for debugging
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
 
 const generateRandomCode = () => {
   const characters =
@@ -267,8 +303,31 @@ const verifyCodeAndChangePassword = async (req, res) => {
       });
     }
 
+    const passwordError = passwordPolicy(newPassword);
+    if (passwordError) {
+      return res.status(400).json({ success: false, message: passwordError });
+    }
+
+    // Check if the new password matches any of the previous passwords
+    const isPreviousPassword = await Promise.all(user.previousPasswords.map(async (prevPassword) => {
+      return await bcrypt.compare(newPassword, prevPassword);
+    }));
+
+    if (isPreviousPassword.some(result => result)) {
+      return res.status(400).json({
+        success: false,
+        message: "New password cannot be one of the previous passwords.",
+      });
+    }
+
     const randomSalt = await bcrypt.genSalt(10);
     const encryptedPassword = await bcrypt.hash(newPassword, randomSalt);
+
+    // Update the previous passwords array
+    user.previousPasswords.push(user.password); // Add the current password to the previous passwords array
+    if (user.previousPasswords.length > 5) {
+      user.previousPasswords.shift(); // Keep only the last 5 passwords
+    }
 
     user.password = encryptedPassword;
     user.resetCode = null;
@@ -286,6 +345,8 @@ const verifyCodeAndChangePassword = async (req, res) => {
     });
   }
 };
+
+
 
 module.exports = {
   registerUser,
