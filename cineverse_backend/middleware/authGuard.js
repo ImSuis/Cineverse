@@ -2,34 +2,34 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 const authGuard = (req, res, next) => {
-  //get header authorization
   const authHeader = req.headers.authorization;
   if (!authHeader) {
-    //console.log("Authorization header not found");
-    return res.json({
+    return res.status(401).json({
       success: false,
       message: "Authorization header not found",
     });
   }
 
-  //get token
   const token = authHeader.split(" ")[1];
   if (!token) {
-    //console.log("Token not found");
-    return res.json({
+    return res.status(401).json({
       success: false,
       message: "Token not found",
     });
   }
 
   try {
-    const decodeUser = jwt.verify(token, process.env.JWT_TOKEN_SECRET);
-    //console.log("Decoded User:", decodeUser);
-    req.user = decodeUser;
+    const decodedUser = jwt.verify(token, process.env.JWT_TOKEN_SECRET);
+    req.user = decodedUser;
     next();
   } catch (error) {
-    //console.log("Invalid token:", error.message);
-    res.json({
+    if (error.name === 'TokenExpiredError') {
+      return res.status(401).json({
+        success: false,
+        message: "Token expired. Please log in again.",
+      });
+    }
+    return res.status(401).json({
       success: false,
       message: "Invalid token",
     });
@@ -39,7 +39,6 @@ const authGuard = (req, res, next) => {
 const authGuardAdmin = (req, res, next) => {
   const authHeader = req.headers.authorization;
   if (!authHeader) {
-    //console.log("Authorization header not found");
     return res.status(403).json({
       success: false,
       message: "Authorization header not found",
@@ -48,7 +47,6 @@ const authGuardAdmin = (req, res, next) => {
 
   const token = authHeader.split(" ")[1];
   if (!token) {
-    //console.log("Token not found");
     return res.status(403).json({
       success: false,
       message: "Token not found",
@@ -57,11 +55,9 @@ const authGuardAdmin = (req, res, next) => {
 
   try {
     const decodedUser = jwt.verify(token, process.env.JWT_TOKEN_SECRET);
-    //console.log("Decoded User:", decodedUser);
     req.user = decodedUser;
 
     if (!req.user.isAdmin) {
-      //console.log("User is not an admin");
       return res.status(403).json({
         success: false,
         message: "Permission denied. Admin access required.",
@@ -70,7 +66,12 @@ const authGuardAdmin = (req, res, next) => {
 
     next();
   } catch (error) {
-    //console.log("Invalid token:", error.message);
+    if (error.name === 'TokenExpiredError') {
+      return res.status(401).json({
+        success: false,
+        message: "Token expired. Please log in again.",
+      });
+    }
     return res.status(403).json({
       success: false,
       message: "Invalid token",
