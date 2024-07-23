@@ -1,4 +1,3 @@
-// src/components/RegisterModal.jsx
 import React, { useState } from 'react';
 import { Button, Form, Modal, CloseButton } from 'react-bootstrap';
 import { createUserApi } from '../api/Api';
@@ -14,6 +13,8 @@ const RegisterModal = ({ show, handleClose }) => {
         confirmPassword: '',
     });
 
+    const [errors, setErrors] = useState({});
+
     const handleChange = (e) => {
         const { id, value } = e.target;
         setFormData({ ...formData, [id]: value });
@@ -24,7 +25,7 @@ const RegisterModal = ({ show, handleClose }) => {
         const { fullName, email, password, confirmPassword } = formData;
 
         if (password !== confirmPassword) {
-            toast.error("Passwords do not match");
+            setErrors({ confirmPassword: "Passwords do not match" });
             return;
         }
 
@@ -34,8 +35,15 @@ const RegisterModal = ({ show, handleClose }) => {
             toast.success("Registration successful");
             handleClose();
         } catch (error) {
-            console.error('Error during registration:', error);
-            toast.error(error.response?.data?.message || 'Registration failed');
+            const errorMessage = error.response?.data?.message;
+            // console.error('Error during registration:', errorMessage);
+            if (errorMessage.includes("Password")) {
+                setErrors({ password: errorMessage });
+            } else if (errorMessage.includes("Email")) {
+                setErrors({ email: errorMessage });
+            } else {
+                toast.error('Registration failed');
+            }
         }
     };
 
@@ -50,19 +58,47 @@ const RegisterModal = ({ show, handleClose }) => {
                     <Form onSubmit={handleSubmit}>
                         <Form.Group controlId="fullName">
                             <Form.Label>Full Name</Form.Label>
-                            <Form.Control type="text" placeholder="Enter your full name" value={formData.fullName} onChange={handleChange} />
+                            <Form.Control
+                                type="text"
+                                placeholder="Enter your full name"
+                                value={formData.fullName}
+                                onChange={handleChange}
+                                isInvalid={!!errors.fullName}
+                            />
+                            <Form.Control.Feedback type="invalid">{errors.fullName}</Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group controlId="email">
                             <Form.Label>Email address</Form.Label>
-                            <Form.Control type="email" placeholder="Enter your email address" value={formData.email} onChange={handleChange} />
+                            <Form.Control
+                                type="email"
+                                placeholder="Enter your email address"
+                                value={formData.email}
+                                onChange={handleChange}
+                                isInvalid={!!errors.email}
+                            />
+                            <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group controlId="password">
                             <Form.Label>Password</Form.Label>
-                            <Form.Control type="password" placeholder="Enter your password" value={formData.password} onChange={handleChange} />
+                            <Form.Control
+                                type="password"
+                                placeholder="Enter your password"
+                                value={formData.password}
+                                onChange={handleChange}
+                                isInvalid={!!errors.password}
+                            />
+                            <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
                         </Form.Group>
                         <Form.Group controlId="confirmPassword">
                             <Form.Label>Confirm Password</Form.Label>
-                            <Form.Control type="password" placeholder="Confirm your password" value={formData.confirmPassword} onChange={handleChange} />
+                            <Form.Control
+                                type="password"
+                                placeholder="Confirm your password"
+                                value={formData.confirmPassword}
+                                onChange={handleChange}
+                                isInvalid={!!errors.confirmPassword}
+                            />
+                            <Form.Control.Feedback type="invalid">{errors.confirmPassword}</Form.Control.Feedback>
                         </Form.Group>
                         <div className="modal-footer">
                             <Button className="btn-orange" type="submit">

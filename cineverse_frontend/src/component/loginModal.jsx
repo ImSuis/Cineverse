@@ -18,10 +18,17 @@ const LoginModal = ({ show, handleClose, setIsLoggedIn, setUser, handleShowForge
             toast.success('Login Successful!');
             handleClose(); // Close modal after successful login
         } catch (error) {
-            toast.error('Login Failed. Please try again.');
-            console.error('Login Error:', error);
+            // console.error('Login Error:', error); // Log the entire error object
+            const errorMessage = error.response?.data?.message || error.message;
+            if (errorMessage && errorMessage.includes("Too many login attempts")) {
+                toast.error('Too many login attempts, please try again after a minute');
+            } else {
+                toast.error('Login Failed. Please try again.');
+            }
         }
     };
+    
+    
 
     return (
         <Modal show={show} onHide={handleClose} centered>
