@@ -3,6 +3,7 @@ import { Button, Form, Modal, CloseButton } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import '../style/loginModal.css'; // Import the CSS file
+import PasswordStrengthBar from 'react-password-strength-bar';
 
 const ForgetPasswordModal = ({ show, handleClose }) => {
     const [step, setStep] = useState(1);
@@ -10,8 +11,13 @@ const ForgetPasswordModal = ({ show, handleClose }) => {
     const [code, setCode] = useState(Array(6).fill(''));
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [errors, setErrors] = useState({});
 
     const handleEmailSubmit = async () => {
+        if (!email) {
+            setErrors({ email: 'Email is required.' });
+            return;
+        }
         try {
             const response = await axios.post('https://localhost:5001/api/users/request-code', { email });
             toast.success(response.data.message);
@@ -22,6 +28,10 @@ const ForgetPasswordModal = ({ show, handleClose }) => {
     };
 
     const handleCodeSubmit = async () => {
+        if (code.some(c => c === '')) {
+            setErrors({ code: 'Please enter the complete OTP.' });
+            return;
+        }
         try {
             const response = await axios.post('https://localhost:5001/api/users/verify-code', { email, code: code.join('') });
             toast.success(response.data.message);
@@ -33,7 +43,7 @@ const ForgetPasswordModal = ({ show, handleClose }) => {
 
     const handlePasswordSubmit = async () => {
         if (newPassword !== confirmPassword) {
-            toast.error('Passwords do not match.');
+            setErrors({ confirmPassword: 'Passwords do not match.' });
             return;
         }
         try {
@@ -80,7 +90,9 @@ const ForgetPasswordModal = ({ show, handleClose }) => {
                                     placeholder="Enter your email"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
+                                    isInvalid={!!errors.email}
                                 />
+                                <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
                             </Form.Group>
                         </Form>
                     )}
@@ -96,12 +108,14 @@ const ForgetPasswordModal = ({ show, handleClose }) => {
                                             maxLength="1"
                                             value={code[index]}
                                             onChange={(e) => handleCodeChange(e, index)}
+                                            isInvalid={!!errors.code}
                                             style={{ width: '3rem', height: '3rem', textAlign: 'center', fontSize: '1.5rem', marginRight: '0.5rem' }}
                                             id={`code-input-${index}`}
                                             className="code-input"
                                         />
                                     ))}
                                 </div>
+                                <Form.Control.Feedback type="invalid">{errors.code}</Form.Control.Feedback>
                             </Form.Group>
                         </Form>
                     )}
@@ -114,7 +128,10 @@ const ForgetPasswordModal = ({ show, handleClose }) => {
                                     placeholder="Enter new password"
                                     value={newPassword}
                                     onChange={(e) => setNewPassword(e.target.value)}
+                                    isInvalid={!!errors.newPassword}
                                 />
+                                <Form.Control.Feedback type="invalid">{errors.newPassword}</Form.Control.Feedback>
+                                <PasswordStrengthBar password={newPassword} />
                             </Form.Group>
                             <Form.Group controlId="formConfirmPassword">
                                 <Form.Label>Re-enter new password</Form.Label>
@@ -123,7 +140,9 @@ const ForgetPasswordModal = ({ show, handleClose }) => {
                                     placeholder="Re-enter new password"
                                     value={confirmPassword}
                                     onChange={(e) => setConfirmPassword(e.target.value)}
+                                    isInvalid={!!errors.confirmPassword}
                                 />
+                                <Form.Control.Feedback type="invalid">{errors.confirmPassword}</Form.Control.Feedback>
                             </Form.Group>
                         </Form>
                     )}
