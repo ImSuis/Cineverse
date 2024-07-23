@@ -4,6 +4,7 @@ import { createUserApi } from '../api/Api';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; // Import Toastify CSS
 import '../style/loginModal.css'; // Import the CSS file
+import PasswordStrengthBar from 'react-password-strength-bar';
 
 const RegisterModal = ({ show, handleClose }) => {
     const [formData, setFormData] = useState({
@@ -88,6 +89,7 @@ const RegisterModal = ({ show, handleClose }) => {
                                 isInvalid={!!errors.password}
                             />
                             <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
+                            <PasswordStrengthBar password={formData.password} />
                         </Form.Group>
                         <Form.Group controlId="confirmPassword">
                             <Form.Label>Confirm Password</Form.Label>
