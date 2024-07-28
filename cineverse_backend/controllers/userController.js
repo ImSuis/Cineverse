@@ -9,31 +9,34 @@ const limiter = rateLimit({
   windowMs: 1 * 60 * 1000, // 1 minute
   max: 5,
   handler: (req, res) => {
-    res.status(429).json({ message: 'Too many login attempts, please try again after a minute' });
+    res
+      .status(429)
+      .json({
+        message: "Too many login attempts, please try again after a minute",
+      });
   },
 });
 
-
 const passwordPolicy = (password) => {
   if (password.length < 8) {
-    return 'Password must be at least 8 characters long.';
+    return "Password must be at least 8 characters long.";
   }
   if (!/[A-Z]/.test(password)) {
-    return 'Password must include at least one uppercase letter.';
+    return "Password must include at least one uppercase letter.";
   }
   if (!/[a-z]/.test(password)) {
-    return 'Password must include at least one lowercase letter.';
+    return "Password must include at least one lowercase letter.";
   }
   if (!/\d/.test(password)) {
-    return 'Password must include at least one number.';
+    return "Password must include at least one number.";
   }
   if (!/[@$!%*?&]/.test(password)) {
-    return 'Password must include at least one special character.';
+    return "Password must include at least one special character.";
   }
   return null; // Password meets all requirements
 };
 
-const registerUser = async (req, res) => {
+const registerUser = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
 
@@ -44,7 +47,7 @@ const registerUser = async (req, res) => {
 
     const existingUser = await User.findOne({ where: { email } });
     if (existingUser) {
-      return res.status(400).json({ message: 'Email already exists' });
+      return res.status(400).json({ message: "Email already exists" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 12);
@@ -54,32 +57,40 @@ const registerUser = async (req, res) => {
       password: hashedPassword,
       previousPasswords: [], // Initialize as an empty array
     });
-    res.status(201).json({ message: 'User registered successfully', user: newUser });
+
+    // Set custom action and details for audit logging
+    req.auditAction = "User Registration";
+    req.auditDetails = `User ${newUser.email} registered successfully`;
+
+    next(); // Call next() to trigger the audit log middleware
+
+    res
+      .status(201)
+      .json({ message: "User registered successfully", user: newUser });
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error: error.message });
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };
 
-
-const loginUser = async (req, res) => {
+const loginUser = async (req, res, next) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ where: { email } });
 
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: "User not found" });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(401).json({ message: 'Invalid credentials' });
+      return res.status(401).json({ message: "Invalid credentials" });
     }
 
     const token = jwt.sign(
       { id: user.id, email: user.email, isAdmin: user.isAdmin }, // Include isAdmin in the token
       process.env.JWT_TOKEN_SECRET,
       {
-        expiresIn: '2h',
+        expiresIn: "2h",
       }
     );
 
@@ -91,9 +102,17 @@ const loginUser = async (req, res) => {
       isAdmin: user.isAdmin, // Include isAdmin in the response
     };
 
-    res.status(200).json({ message: 'Login successful', token, user: userDetails });
+    // Set custom action and details for audit logging
+    req.auditAction = "User Login";
+    req.auditDetails = `User ${user.email} logged in successfully`;
+
+    next(); // Call next() to trigger the audit log middleware
+
+    res
+      .status(200)
+      .json({ message: "Login successful", token, user: userDetails });
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error: error.message });
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };
 
@@ -113,7 +132,7 @@ const getUserDetails = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
-const updateUser = async (req, res) => {
+const updateUser = async (req, res, next) => {
   try {
     const userId = req.user.id;
     const { name, phone } = req.body;
@@ -128,13 +147,19 @@ const updateUser = async (req, res) => {
 
     await user.save();
 
+    // Set custom action and details for audit logging
+    req.auditAction = "Update User";
+    req.auditDetails = `User ${user.email} updated their profile`;
+
+    next(); // Call next() to trigger the audit log middleware
+
     res.status(200).json({ message: "User updated successfully", user });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
 
-const changePassword = async (req, res) => {
+const changePassword = async (req, res, next) => {
   try {
     const userId = req.user.id;
     const { currentPassword, newPassword } = req.body;
@@ -155,12 +180,18 @@ const changePassword = async (req, res) => {
     }
 
     // Check if the new password is in the previous passwords array
-    const isPreviousPassword = await Promise.all(user.previousPasswords.map(async (prevPassword) => {
-      return await bcrypt.compare(newPassword, prevPassword);
-    }));
+    const isPreviousPassword = await Promise.all(
+      user.previousPasswords.map(async (prevPassword) => {
+        return await bcrypt.compare(newPassword, prevPassword);
+      })
+    );
 
-    if (isPreviousPassword.some(result => result)) {
-      return res.status(400).json({ message: "New password cannot be one of the previous passwords" });
+    if (isPreviousPassword.some((result) => result)) {
+      return res
+        .status(400)
+        .json({
+          message: "New password cannot be one of the previous passwords",
+        });
     }
 
     const hashedNewPassword = await bcrypt.hash(newPassword, 10);
@@ -174,22 +205,24 @@ const changePassword = async (req, res) => {
     user.previousPasswords = previousPasswords;
 
     // Explicitly mark the previousPasswords field as changed
-    user.setDataValue('previousPasswords', previousPasswords);
-    user.changed('previousPasswords', true);
-
-    // console.log('Updated previousPasswords:', user.previousPasswords); 
+    user.setDataValue("previousPasswords", previousPasswords);
+    user.changed("previousPasswords", true);
 
     user.password = hashedNewPassword;
 
     await user.save();
 
+    // Set custom action and details for audit logging
+    req.auditAction = "Change Password";
+    req.auditDetails = `User ${user.email} changed their password`;
+
+    next(); // Call next() to trigger the audit log middleware
+
     res.status(200).json({ message: "Password changed successfully" });
   } catch (error) {
-    // console.error(error); // Log for debugging
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
-
 
 const generateRandomCode = () => {
   const characters =
@@ -309,11 +342,13 @@ const verifyCodeAndChangePassword = async (req, res) => {
     }
 
     // Check if the new password matches any of the previous passwords
-    const isPreviousPassword = await Promise.all(user.previousPasswords.map(async (prevPassword) => {
-      return await bcrypt.compare(newPassword, prevPassword);
-    }));
+    const isPreviousPassword = await Promise.all(
+      user.previousPasswords.map(async (prevPassword) => {
+        return await bcrypt.compare(newPassword, prevPassword);
+      })
+    );
 
-    if (isPreviousPassword.some(result => result)) {
+    if (isPreviousPassword.some((result) => result)) {
       return res.status(400).json({
         success: false,
         message: "New password cannot be one of the previous passwords.",
@@ -345,8 +380,6 @@ const verifyCodeAndChangePassword = async (req, res) => {
     });
   }
 };
-
-
 
 module.exports = {
   registerUser,

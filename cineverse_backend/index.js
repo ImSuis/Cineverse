@@ -39,6 +39,7 @@ require("./model/movieModel");
 require("./model/locationModel");
 require("./model/showtimeModel");
 require("./model/association");
+require("./model/auditLogModel");
 
 // Initialize database
 require("./database/init");
