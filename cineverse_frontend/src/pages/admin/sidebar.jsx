@@ -1,7 +1,5 @@
-// src/components/Sidebar.js
-
 import React from 'react';
-import { FaFilm, FaLocationArrow, FaTachometerAlt, FaTicketAlt } from 'react-icons/fa'; // Example icons
+import { FaFilm, FaLocationArrow, FaTachometerAlt, FaTicketAlt, FaClipboardList } from 'react-icons/fa'; // Added FaClipboardList for audit logs icon
 import { Link } from 'react-router-dom';
 import '../admin/style/sidebar.css';
 
@@ -49,10 +47,15 @@ const Sidebar = () => {
                     <li>
                         <Link to="/admin/schedules">
                             <FaTicketAlt className="sidebar-icon" />
-                            Manage schedule
+                            Manage Schedules
                         </Link>
                     </li>
-                    {/* Add more links as needed */}
+                    <li>
+                        <Link to="/admin/audit-logs">
+                            <FaClipboardList className="sidebar-icon" />
+                            Audit Logs
+                        </Link>
+                    </li>
                 </ul>
             </div>
             {user && (

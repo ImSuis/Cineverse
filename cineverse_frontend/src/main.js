@@ -25,6 +25,7 @@ import AuthModalManager from "./pages/authModalManger";
 import Confirmation from "./pages/confirmation";
 import SearchResults from "./pages/searchResults";
 import EditMovie from "./pages/admin/editMovies";
+import AuditLogs from "./pages/admin/auditLogs";
 
 const Main = () => {
   const location = useLocation();
@@ -92,6 +93,7 @@ const Main = () => {
           <Route path="/admin/schedules" element={<ManageSchedules />} />
           <Route path="/admin/schedules/add" element={<AddSchedule />} />
           <Route path="/admin/movies/edit/:id" element={<EditMovie />} />
+          <Route path="/admin/audit-logs" element={<AuditLogs />} />
         </Route>
       </Routes>
       <AuthModalManager

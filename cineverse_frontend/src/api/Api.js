@@ -50,3 +50,4 @@ export const getAuthorizationHeader = () => ({
     authorization: `Bearer ${localStorage.getItem("token")}`, // Include authorization token from local storage
   },
 });
+
